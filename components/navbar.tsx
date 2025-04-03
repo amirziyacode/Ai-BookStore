@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   DropdownMenu,
@@ -17,7 +16,7 @@ import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/context/auth-context"
 import { useCart } from "@/context/cart-context"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Menu, Search, X, ShoppingCart, User, LogIn, LogOut, BookOpen } from "lucide-react"
+import { Menu,ShoppingCart, User, LogIn, LogOut, BookOpen } from "lucide-react"
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -100,18 +99,11 @@ export default function Navbar() {
 
         {/* Mobile Search Toggle */}
         <div className="flex md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setShowSearchMobile(!showSearchMobile)}>
-            {showSearchMobile ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
-          </Button>
         </div>
-
         {/* Desktop Actions */}
         <div className="hidden items-center gap-4 md:flex">
           <div className="relative w-60">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search books..." className="pl-8" />
           </div>
-
           <Link href="/cart">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
@@ -191,16 +183,6 @@ export default function Navbar() {
           )}
         </div>
       </div>
-
-      {/* Mobile Search Bar */}
-      {showSearchMobile && (
-        <div className="border-t p-2 md:hidden">
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search books..." className="pl-8" />
-          </div>
-        </div>
-      )}
     </header>
   )
 }

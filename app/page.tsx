@@ -8,49 +8,35 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-slate-900 to-slate-800 py-20 text-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-6 md:grid-cols-2 md:gap-12">
-            <div className="flex flex-col justify-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Discover Your Next Favorite Book
-                </h1>
-                <p className="max-w-[600px] text-gray-300 md:text-xl">
-                  Explore our vast collection of books from bestselling authors and emerging talents. Find your perfect
-                  read today.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
+      <section className="w-full py-12 md:py-24 lg:py-32  dark:bg-slate-900">
+        <div className="container mx-12 px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                Discover Your Next Favorite Booka
+              </h1>
+              <p className="text-muted-foreground md:text-xl">
+                Explore our vast collection of books from bestsellers to hidden gems. Start your reading journey today.
+              </p>
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Link href="/bookstore">
-                  <Button size="lg" className="bg-rose-600 hover:bg-rose-700">
-                    Browse Books
-                  </Button>
+                  <Button size="lg">Browse Books</Button>
                 </Link>
                 <Link href="/about">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-slate-900"
-                  >
+                  <Button variant="outline" size="lg">
                     Learn More
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="flex items-center justify-center">
-              <div className="relative h-[350px] w-[300px] rotate-3 overflow-hidden rounded-lg shadow-lg">
-                <Image
-                  src="/placeholder.svg?height=500&width=350"
-                  alt="Book collection"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 h-[250px] w-[200px] -rotate-6 overflow-hidden rounded-lg shadow-lg md:block hidden">
-                <Image src="/placeholder.svg?height=400&width=250" alt="Book" fill className="object-cover" />
-              </div>
+            <div className="relative mx-20 h-[400px] w-full rounded-xl overflow-hidden">
+              <Image
+                src="/landing.png"
+                alt="Bookstore Hero Image"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
         </div>
