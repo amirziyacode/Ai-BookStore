@@ -33,7 +33,7 @@ export default function AboutPage() {
         </div>
         <div className="relative h-[400px] overflow-hidden rounded-lg">
           <Image
-            src="/placeholder.svg?height=400&width=600"
+            src="/about.png"
             alt="Our bookstore interior"
             fill
             className="object-cover"
@@ -78,28 +78,10 @@ export default function AboutPage() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
-              name: "Sarah Johnson",
-              role: "Founder & CEO",
-              bio: "Book lover with 15+ years in publishing who founded Modern Bookstore to share her passion for literature.",
-              image: "/placeholder.svg?height=300&width=300",
-            },
-            {
-              name: "David Chen",
-              role: "Head of Curation",
-              bio: "Former literature professor with a keen eye for emerging authors and underrepresented voices.",
-              image: "/placeholder.svg?height=300&width=300",
-            },
-            {
-              name: "Maya Patel",
-              role: "Community Manager",
-              bio: "Organizes our events, book clubs, and outreach programs with boundless enthusiasm.",
-              image: "/placeholder.svg?height=300&width=300",
-            },
-            {
-              name: "James Wilson",
-              role: "Tech Lead",
-              bio: "Ensures our online experience matches the warmth and discovery of our physical store.",
-              image: "/placeholder.svg?height=300&width=300",
+              name: "Amir Ali Ziyzadeh",
+              role: "Backend Developer",
+              bio: "Java developer with SpringBoot to build WebApp",
+              image: "/profile.jpg",
             },
           ].map((member, index) => (
             <div key={index} className="flex flex-col items-center text-center">
