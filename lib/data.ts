@@ -1,4 +1,5 @@
 import type { Book, Order, Notification } from "@/lib/types"
+import { tree } from "next/dist/build/templates/app-page"
 
 export const books: Book[] = [
   {
@@ -54,12 +55,14 @@ export const books: Book[] = [
     author: "Robert C. Martin",
     coverImage: "https://skybooks.ir/images/productImages/CleanCode_hY1655407329.jpg",
     price: 22.99,
+    discount:0.0,
     rating: 4.9,
     category: "computer science",
     isbn:"9780132350884",
     paperback:462,
     publisher:"Manning",
     language:"English",
+    bestseller:true,
     year:"2009",
     description:"Even bad code can function. But if code isn’t clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code. But it doesn’t have to be that way.Noted software expert Robert C. Martin, presents a revolutionary paradigm with Clean Code: A Handbook of Agile Software Craftsmanship. Martin, who has helped bring agile principles from a practitioner’s point of view to tens of thousands of programmers, has teamed up with his colleagues from Object Mentor to distill their best agile practice of cleaning code “on the fly” into a book that will instill within you the values of software craftsman, and make you a better programmer―but only if you work at it."
   },
@@ -134,6 +137,7 @@ export const books: Book[] = [
     category: "biography",
     discount: 5,
     year:"2022",
+    bestseller:true,
     isbn:"9781250866448",
     paperback:280,
     publisher:"Flatiron Books",
@@ -149,6 +153,8 @@ export const books: Book[] = [
     rating: 4.8,
     category: "Personal development",
     year:"2018",
+    bestseller:true,
+    discount:0.0,
     isbn:"9780735211292",
     paperback:320,
     publisher:"Avery",
@@ -182,6 +188,8 @@ export const books: Book[] = [
     isbn:"9780349413686",
     paperback:195,
     year:"2016",
+    discount:0.0,
+    bestseller:true,
     publisher:"Grand Central",
     language:"English",
     description:"Cal Newport discusses in his new book, Deep Work: Rules For Focused Success In A Distracted World, about how professionals of today have started valuing quantity over quality; and how this has turned young professionals of today into puppets who try to indulge in extensive multitasking, dealing with multiple emails and projects. This prevents them from doing 'deep work'; which is focused work free from all other distractions. This also means that the professionals of today should sort out their priorities. Newport uses principles of psychology and neuroscience to enhance his points. He elaborates how to improve a person's cognitive abilities and how employers should encourage workers to not take shortcuts for completing projects. He claims that the best way to break away from the corporate race is to take a break from technology and social media and use some alone-time to rewind and introspect. Newport enforces the beliefs of a non-technophile to deliver work that is productive and efficiently delivered."
