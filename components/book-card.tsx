@@ -40,10 +40,10 @@ export default function BookCard({ book }: BookCardProps) {
             fill
             className="object-cover transition-transform hover:scale-105"
           />
-          {book.isNew == true && (
+          {book.new && (
             <Badge className="absolute right-2 top-2 bg-green-500 text-white hover:bg-green-600">New</Badge>
           )}
-          {book.isBestseller == true && (
+          {book.bestseller && (
             <Badge className="absolute left-2 top-2 bg-amber-500 text-white hover:bg-amber-600">Bestseller</Badge>
           )}
         </div>

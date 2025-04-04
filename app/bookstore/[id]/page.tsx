@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useState,useEffect } from "react"
+import { useState} from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,7 +10,6 @@ import { books } from "@/lib/data"
 import { useCart } from "@/context/cart-context"
 import { ShoppingCart, Heart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import axios from 'axios'
 
 export default function BookDetailPage() {
   const params = useParams()
