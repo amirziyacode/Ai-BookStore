@@ -40,10 +40,10 @@ export default function BookCard({ book }: BookCardProps) {
             fill
             className="object-cover transition-transform hover:scale-105"
           />
-          {book.isNew && (
+          {book.isNew == true && (
             <Badge className="absolute right-2 top-2 bg-green-500 text-white hover:bg-green-600">New</Badge>
           )}
-          {book.isBestseller && (
+          {book.isBestseller == true && (
             <Badge className="absolute left-2 top-2 bg-amber-500 text-white hover:bg-amber-600">Bestseller</Badge>
           )}
         </div>
@@ -52,10 +52,10 @@ export default function BookCard({ book }: BookCardProps) {
           <p className="line-clamp-1 text-sm text-muted-foreground">{book.author}</p>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center">
-              <span className="font-medium">${book.price.toFixed(2)}</span>
-              {book.originalPrice && (
+              <span className="font-medium">${book.discount.toFixed(2)}</span>
+              {book.price && (
                 <span className="ml-2 text-sm text-muted-foreground line-through">
-                  ${book.originalPrice.toFixed(2)}
+                  ${book.price.toFixed(2)}
                 </span>
               )}
             </div>

@@ -23,7 +23,6 @@ export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth()
   const { cart } = useCart()
   const [isScrolled, setIsScrolled] = useState(false)
-  const [showSearchMobile, setShowSearchMobile] = useState(false)
 
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0)
 
@@ -59,7 +58,7 @@ export default function Navbar() {
           <SheetContent side="left">
             <Link href="/" className="flex items-center gap-2">
               <BookOpen className="h-6 w-6" />
-              <span className="text-xl font-bold">Modern Bookstore</span>
+              <span className="text-xl font-bold">Spring Bookstore</span>
             </Link>
             <nav className="mt-8 flex flex-col gap-4">
               {navLinks.map((link) => (
@@ -78,7 +77,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <BookOpen className="h-6 w-6" />
-          <span className="text-xl font-bold hidden sm:inline-block">Modern Bookstore</span>
+          <span className="text-xl font-bold hidden sm:inline-block">Spring Bookstore</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -96,14 +95,6 @@ export default function Navbar() {
             ))}
           </ul>
         </nav>
-
-        {/* Mobile Search Toggle */}
-        <div className="flex md:hidden">
-        </div>
-        {/* Desktop Actions */}
-        <div className="hidden items-center gap-4 md:flex">
-          <div className="relative w-60">
-          </div>
           <Link href="/cart">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
@@ -182,7 +173,6 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-      </div>
     </header>
   )
 }

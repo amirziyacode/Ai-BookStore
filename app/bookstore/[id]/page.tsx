@@ -19,6 +19,7 @@ export default function BookDetailPage() {
 
   const book = books.find((book) => book.id === params.id)
 
+
   if (!book) {
     return (
       <div className="container mx-auto flex h-[70vh] items-center justify-center px-4">
@@ -72,7 +73,7 @@ export default function BookDetailPage() {
         {/* Book Details */}
         <div className="flex flex-col space-y-6">
           <div>
-            <Badge className="mb-2">{book.genre}</Badge>
+            <Badge className="mb-2">{book.category}</Badge>
             <h1 className="text-3xl font-bold">{book.title}</h1>
             <p className="text-lg text-gray-500">by {book.author}</p>
           </div>
@@ -90,7 +91,6 @@ export default function BookDetailPage() {
                 </svg>
               ))}
             </div>
-            <span className="text-sm text-gray-500">({book.reviews} reviews)</span>
           </div>
 
           <div>
@@ -99,16 +99,16 @@ export default function BookDetailPage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <h2 className="text-2xl font-bold">${book.price.toFixed(2)}</h2>
-            {book.originalPrice && (
-              <span className="text-lg text-gray-500 line-through">${book.originalPrice.toFixed(2)}</span>
+            {/* <h2 className="text-2xl font-bold">${book.price.toFixed(2)}</h2> */}
+            {book.price && (
+              <span className="text-lg text-gray-500 line-through">${book.price.toFixed(2)}</span>
             )}
-            {book.originalPrice && (
+            {book.price && (
               <Badge
                 variant="outline"
                 className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
               >
-                {Math.round(((book.originalPrice - book.price) / book.originalPrice) * 100)}% OFF
+                {Math.round(((book.price - book.discount) / book.price) * 100)}% OFF
               </Badge>
             )}
           </div>
@@ -128,10 +128,10 @@ export default function BookDetailPage() {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>Publisher:</div>
               <div>{book.publisher}</div>
-              <div>Publication Date:</div>
-              <div>{book.publicationDate}</div>
+              <div>Year:</div>
+              <div>{book.year}</div>
               <div>Pages:</div>
-              <div>{book.pages}</div>
+              <div>{book.paperback}</div>
               <div>Language:</div>
               <div>{book.language}</div>
               <div>ISBN:</div>

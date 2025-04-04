@@ -1,24 +1,58 @@
 "use client"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { books } from "@/lib/data"
 import BookCard from "@/components/book-card"
 import { Search } from "lucide-react"
-
+import axios from 'axios'
 export default function BookstorePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [genreFilter, setGenreFilter] = useState("all")
   const [sortBy, setSortBy] = useState("title")
+  const [fetchBooks,setBooks] = useState([
+    {
+      id: "book-1",
+      title: "The Midnight Library",
+      author: "Matt Haig",
+      description:
+        "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived. To see how things would be if you had made other choices... Would you have done anything different, if you had the chance to undo your regrets?",
+      discount:10,
+      price: 24.99,
+      coverImage: "/placeholder.svg?height=450&width=300",
+      rating: 4,
+      category: "Fiction",
+      isNew: false,
+      isBestseller: true,
+      publisher: "Viking",
+      year: "2020",
+      paperback: 304,
+      language: "English",
+      isbn: "978-0525559474",
+    },
+  ]);
 
-  const genres = ["Fiction", "Non-Fiction", "Science Fiction", "Mystery", "Romance", "Biography"]
 
-  const filteredBooks = books.filter((book) => {
+  const genres = ["CRYPTOGRAPHY", "COMPUTER_SCIENCE", "MOTIVATION","LANGUAGE", "BIOGRAPHY"]
+
+  // {Coms From Server} //
+  useEffect(() => {
+    const getAllBooks = async() =>{
+      try{
+        const allBooks = (await axios.get("http://localhost:8080/api/book/allBooks")).data;
+        console.log(allBooks)
+        setBooks(allBooks);
+      }catch(error){
+        console.error('Error fetching books:', error);
+      }
+    }
+    getAllBooks();
+  },[]);
+
+  const filteredBooks = fetchBooks.filter((book) => {
     const matchesSearch =
       book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       book.author.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesGenre = genreFilter === "all" || book.genre === genreFilter
+    const matchesGenre = genreFilter === "all" || book.category === genreFilter
     return matchesSearch && matchesGenre
   })
 

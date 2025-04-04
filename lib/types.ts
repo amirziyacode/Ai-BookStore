@@ -3,17 +3,16 @@ export interface Book {
   title: string
   author: string
   description: string
-  price: number
-  originalPrice?: number
+  discount: number
+  price?: number
   coverImage?: string
   rating: number
-  reviews: number
-  genre: string
+  category: string
   isNew?: boolean
   isBestseller?: boolean
   publisher: string
-  publicationDate: string
-  pages: number
+  year: string
+  paperback: number
   language: string
   isbn: string
 }
