@@ -11,23 +11,20 @@ export default function BookstorePage() {
   const [sortBy, setSortBy] = useState("title")
   const [fetchBooks,setBooks] = useState([
     {
-      id: "book-1",
-      title: "The Midnight Library",
-      author: "Matt Haig",
-      description:
-        "Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived. To see how things would be if you had made other choices... Would you have done anything different, if you had the chance to undo your regrets?",
-      discount:10,
+      id: 1,
+      title: "Grokking Algorithms",
+      author: "Aditya Y. Bhargava",
+      coverImage: "https://skybooks.ir/images/productImages/Grokking-Algorithms_EB1709675048.jpg",
       price: 24.99,
-      coverImage: "/placeholder.svg?height=450&width=300",
-      rating: 4,
-      category: "Fiction",
-      isNew: false,
-      isBestseller: true,
-      publisher: "Viking",
-      year: "2020",
-      paperback: 304,
-      language: "English",
-      isbn: "978-0525559474",
+      rating: 5,
+      category: "computer science",
+      discount: 15,
+      isbn:"9781633438538",
+      paperback:322,
+      publisher:"Manning",
+      language:"English",
+      year:"2012",
+      description:"An Illustrated Guide for Programmers and Other Curious People  A friendly, fully-illustrated introduction to the most important computer programming algorithms.Master the most widely used algorithms and be fully prepared when you’re asked about them at your next job interview. With beautifully simple explanations, over 400 fun illustrations, and dozens of relevant examples, you’ll actually enjoy learning about algorithms with this fun and friendly guide! The first edition of Grokking Algorithms proved to over 100,000 readers that learning algorithms doesn't have to be complicated or boring! This revised second edition contains brand new coverage of trees, including binary search trees, balanced trees, B-trees and more. You’ll also discover fresh insights on data structure performance that takes account of modern CPUs. Plus, the book’s fully annotated code samples have been updated to Python 3.Foreword by Daniel Zingaro."
     },
   ]);
 

@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,6 +10,7 @@ import { books } from "@/lib/data"
 import { useCart } from "@/context/cart-context"
 import { ShoppingCart, Heart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import axios from 'axios'
 
 export default function BookDetailPage() {
   const params = useParams()
@@ -17,7 +18,7 @@ export default function BookDetailPage() {
   const { addToCart } = useCart()
   const [isWishlisted, setIsWishlisted] = useState(false)
 
-  const book = books.find((book) => book.id === params.id)
+  const book = books.find((book) => book.id.toString() === params.id)
 
 
   if (!book) {
@@ -99,16 +100,16 @@ export default function BookDetailPage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            {/* <h2 className="text-2xl font-bold">${book.price.toFixed(2)}</h2> */}
+            <h2 className="text-2xl font-bold">${book.discount?.toFixed(2)}</h2>
             {book.price && (
               <span className="text-lg text-gray-500 line-through">${book.price.toFixed(2)}</span>
             )}
-            {book.price && (
+            {book.discount && (
               <Badge
                 variant="outline"
                 className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
               >
-                {Math.round(((book.price - book.discount) / book.price) * 100)}% OFF
+                {Math.round(book.discount)}% OFF
               </Badge>
             )}
           </div>
