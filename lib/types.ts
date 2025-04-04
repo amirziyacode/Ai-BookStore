@@ -8,7 +8,7 @@ export interface Book {
   coverImage?: string
   rating: number
   category: string
-  newx?: boolean
+  new?: boolean
   bestseller?: boolean
   publisher: string
   year: string

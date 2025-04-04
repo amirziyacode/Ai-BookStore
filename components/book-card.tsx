@@ -52,8 +52,8 @@ export default function BookCard({ book }: BookCardProps) {
           <p className="line-clamp-1 text-sm text-muted-foreground">{book.author}</p>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center">
-              <span className="font-medium">${book.discount?.toFixed(2)}</span>
-              {book.price && (
+              <span className="font-medium"> ${book.discount == 0 ? book.price.toFixed(1) : (book.price -  (book.price * book.discount)/100).toFixed(2)}</span>
+              {book.discount && (
                 <span className="ml-2 text-sm text-muted-foreground line-through">
                   ${book.price.toFixed(2)}
                 </span>

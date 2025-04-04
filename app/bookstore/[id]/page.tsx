@@ -18,6 +18,7 @@ export default function BookDetailPage() {
   const [isWishlisted, setIsWishlisted] = useState(false)
 
   const book = books.find((book) => book.id.toString() === params.id)
+  console.log(params.id)
 
 
   if (!book) {
@@ -99,8 +100,8 @@ export default function BookDetailPage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <h2 className="text-2xl font-bold">${book.discount?.toFixed(2)}</h2>
-            {book.price && (
+            <h2 className="text-2xl font-bold">${book.discount == 0 ? book.price.toFixed(2) : (book.price -  (book.price * book.discount)/100).toFixed(2)}</h2>
+            {book.discount && (
               <span className="text-lg text-gray-500 line-through">${book.price.toFixed(2)}</span>
             )}
             {book.discount && (

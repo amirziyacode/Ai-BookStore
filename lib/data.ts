@@ -188,7 +188,7 @@ export const books: Book[] = [
   }
 ]
 
-export const featuredBooks: Book[] = books.filter((book) => book.isBestseller).slice(0, 4)
+export const featuredBooks: Book[] = books.filter((book) => book.bestseller).slice(0, 4)
 
 export const orders: Order[] = [
   {
