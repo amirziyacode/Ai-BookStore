@@ -4,11 +4,13 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import BookCard from "@/components/book-card"
 import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import axios from 'axios'
 export default function BookstorePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [genreFilter, setGenreFilter] = useState("all")
   const [sortBy, setSortBy] = useState("title")
+  const [pageCount,setPage] = useState(1)
   const [fetchBooks,setBooks] = useState([
     {
       id: 1,
@@ -121,6 +123,29 @@ export default function BookstorePage() {
           <p className="text-center text-gray-500">No books found matching your criteria</p>
         </div>
       )}
+
+            {/* Pagination */}
+            <div className="mt-8 flex justify-center">
+        <div className="flex gap-1">
+          <Button variant="outline" size="icon">
+            &lt;
+          </Button>
+          {pageCount==1 ?  <Button variant="outline" size="icon" onClick={() => setPage(1)}   className="bg-primary text-primary-foreground">1</Button>:<Button variant="outline" size="icon" onClick={() => setPage(1)}>1</Button>}
+          {pageCount ==2 ? <Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(2)} size="icon">
+            2
+          </Button> : <Button variant="outline" onClick={() => setPage(2)} size="icon">
+            2
+          </Button>}
+          {pageCount ==3 ?<Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(3)} size="icon">
+            3
+          </Button>:<Button variant="outline" onClick={() => setPage(3)} size="icon">
+            3
+          </Button>}
+          <Button variant="outline" size="icon">
+            &gt;
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
