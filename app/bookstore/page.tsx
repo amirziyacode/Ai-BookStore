@@ -36,7 +36,6 @@ export default function BookstorePage() {
     const getAllBooks = async() =>{
       try{
         const allBooks = (await axios.get("http://localhost:8080/api/book/allBooks")).data;
-        console.log(allBooks)
         setBooks(allBooks);
       }catch(error){
         console.error('Error fetching books:', error);

@@ -1,27 +1,62 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useState} from "react"
+import { useEffect, useState} from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { books } from "@/lib/data"
 import { useCart } from "@/context/cart-context"
 import { ShoppingCart, Heart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import axios from "axios"
+
+
 
 export default function BookDetailPage() {
   const params = useParams()
   const { toast } = useToast()
   const { addToCart } = useCart()
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const [fetchbook,setBooks] = useState({
+    id: 1,
+    title: "Grokking Algorithms",
+    author: "Aditya Y. Bhargava",
+    coverImage: "https://skybooks.ir/images/productImages/Grokking-Algorithms_EB1709675048.jpg",
+    price: 24.99,
+    rating: 5,
+    category: "computer science",
+    discount: 15,
+    isbn:"9781633438538",
+    paperback:322,
+    publisher:"Manning",
+    language:"English",
+    year:"2012",
+    description:"An Illustrated Guide for Programmers and Other Curious People  A friendly, fully-illustrated introduction to the most important computer programming algorithms.Master the most widely used algorithms and be fully prepared when you’re asked about them at your next job interview. With beautifully simple explanations, over 400 fun illustrations, and dozens of relevant examples, you’ll actually enjoy learning about algorithms with this fun and friendly guide! The first edition of Grokking Algorithms proved to over 100,000 readers that learning algorithms doesn't have to be complicated or boring! This revised second edition contains brand new coverage of trees, including binary search trees, balanced trees, B-trees and more. You’ll also discover fresh insights on data structure performance that takes account of modern CPUs. Plus, the book’s fully annotated code samples have been updated to Python 3.Foreword by Daniel Zingaro."
+  });
 
-  const book = books.find((book) => book.id.toString() === params.id)
-  console.log(params.id)
+  
+
+  useEffect(() => {
+    const getBookById = async() =>{
+      try{
+        const bookByid = (await axios.get("http://localhost:8080/api/book/getById",{
+          params : {
+            id : params.id
+          }
+        })).data
+        setBooks(bookByid)
+        console.log(bookByid)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    getBookById();
+  },[])
 
 
-  if (!book) {
+
+  if (!fetchbook) {
     return (
       <div className="container mx-auto flex h-[70vh] items-center justify-center px-4">
         <Card className="w-full max-w-md">
@@ -40,10 +75,10 @@ export default function BookDetailPage() {
   }
 
   const handleAddToCart = () => {
-    addToCart(book)
+    addToCart(fetchbook)
     toast({
       title: "Added to cart",
-      description: `${book.title} has been added to your cart.`,
+      description: `${fetchbook.title} has been added to your cart.`,
     })
   }
 
@@ -51,7 +86,7 @@ export default function BookDetailPage() {
     setIsWishlisted(!isWishlisted)
     toast({
       title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
-      description: `${book.title} has been ${isWishlisted ? "removed from" : "added to"} your wishlist.`,
+      description: `${fetchbook.title} has been ${isWishlisted ? "removed from" : "added to"} your wishlist.`,
     })
   }
 
@@ -62,8 +97,8 @@ export default function BookDetailPage() {
         <div className="flex items-center justify-center">
           <div className="relative h-[500px] w-[350px] overflow-hidden rounded-lg shadow-lg">
             <Image
-              src={book.coverImage || "/placeholder.svg?height=500&width=350"}
-              alt={book.title}
+              src={fetchbook.coverImage || "/placeholder.svg?height=500&width=350"}
+              alt={fetchbook.title}
               fill
               className="object-cover"
               priority
@@ -74,9 +109,9 @@ export default function BookDetailPage() {
         {/* Book Details */}
         <div className="flex flex-col space-y-6">
           <div>
-            <Badge className="mb-2">{book.category}</Badge>
-            <h1 className="text-3xl font-bold">{book.title}</h1>
-            <p className="text-lg text-gray-500">by {book.author}</p>
+            <Badge className="mb-2">{fetchbook.category}</Badge>
+            <h1 className="text-3xl font-bold">{fetchbook.title}</h1>
+            <p className="text-lg text-gray-500">by {fetchbook.author}</p>
           </div>
 
           <div className="flex items-center space-x-2">
@@ -84,7 +119,7 @@ export default function BookDetailPage() {
               {[...Array(5)].map((_, i) => (
                 <svg
                   key={i}
-                  className={`h-5 w-5 ${i < book.rating ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`h-5 w-5 ${i < fetchbook.rating ? "text-yellow-400" : "text-gray-300"}`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -96,20 +131,19 @@ export default function BookDetailPage() {
 
           <div>
             <h2 className="mb-2 text-xl font-semibold">Description</h2>
-            <p className="text-gray-700 dark:text-gray-300">{book.description}</p>
+            <p className="text-gray-700 dark:text-gray-300">{fetchbook.description}</p>
           </div>
-
           <div className="flex items-center space-x-2">
-            <h2 className="text-2xl font-bold">${book.discount == 0 ? book.price.toFixed(2) : (book.price -  (book.price * book.discount)/100).toFixed(2)}</h2>
-            {book.discount && (
-              <span className="text-lg text-gray-500 line-through">${book.price.toFixed(2)}</span>
+            <h2 className="text-2xl font-bold">${fetchbook.discount ==0 ? fetchbook.price.toFixed(2) : (fetchbook.price -  (fetchbook.price * fetchbook.discount)/100).toFixed(2)}</h2>
+            {fetchbook.discount !=0 && (
+              <span className="text-lg text-gray-500 line-through">${fetchbook.price.toFixed(2)}</span>
             )}
-            {book.discount && (
+            {fetchbook.discount !=0 && (
               <Badge
                 variant="outline"
                 className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
               >
-                {Math.round(book.discount)}% OFF
+                {fetchbook.discount}% OFF
               </Badge>
             )}
           </div>
@@ -128,15 +162,15 @@ export default function BookDetailPage() {
             <h3 className="mb-2 font-semibold">Book Details</h3>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>Publisher:</div>
-              <div>{book.publisher}</div>
+              <div>{fetchbook.publisher}</div>
               <div>Year:</div>
-              <div>{book.year}</div>
+              <div>{fetchbook.year}</div>
               <div>Pages:</div>
-              <div>{book.paperback}</div>
+              <div>{fetchbook.paperback}</div>
               <div>Language:</div>
-              <div>{book.language}</div>
+              <div>{fetchbook.language}</div>
               <div>ISBN:</div>
-              <div>{book.isbn}</div>
+              <div>{fetchbook.isbn}</div>
             </div>
           </div>
         </div>
