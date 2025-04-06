@@ -33,18 +33,39 @@ export default function BookstorePage() {
 
   const genres = ["CRYPTOGRAPHY", "COMPUTER_SCIENCE", "MOTIVATION","LANGUAGE", "BIOGRAPHY"]
 
-  // {Coms From Server} //
+  // {Comes From Server} //
   useEffect(() => {
     const getAllBooks = async() =>{
       try{
-        const allBooks = (await axios.get("http://localhost:8080/api/book/allBooks")).data;
-        setBooks(allBooks);
+        const getBooks = (await axios.get("http://localhost:8080/api/book/Books",{
+          params:{
+            pageNumber:0,
+            perPage:12
+          }
+        })).data.content
+        setBooks(getBooks);
       }catch(error){
         console.error('Error fetching books:', error);
       }
     }
     getAllBooks();
   },[]);
+  
+
+  const bookpages = async(pageNumber:number,pageper:number) =>{
+    try{
+      const getBooks = (await axios.get("http://localhost:8080/api/book/Books",{
+        params:{
+          pageNumber:pageNumber,
+          perPage:pageper
+        }
+      })).data.content
+      setBooks(getBooks);
+      setPage(pageNumber+1)
+    }catch(error){
+      console.error('Error fetching books:', error);
+    }
+  }
 
   const filteredBooks = fetchBooks.filter((book) => {
     const matchesSearch =
@@ -126,24 +147,18 @@ export default function BookstorePage() {
 
             {/* Pagination */}
             <div className="mt-8 flex justify-center">
-        <div className="flex gap-1">
-          <Button variant="outline" size="icon">
-            &lt;
-          </Button>
-          {pageCount==1 ?  <Button variant="outline" size="icon" onClick={() => setPage(1)}   className="bg-primary text-primary-foreground">1</Button>:<Button variant="outline" size="icon" onClick={() => setPage(1)}>1</Button>}
-          {pageCount ==2 ? <Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(2)} size="icon">
-            2
-          </Button> : <Button variant="outline" onClick={() => setPage(2)} size="icon">
-            2
-          </Button>}
-          {pageCount ==3 ?<Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(3)} size="icon">
-            3
-          </Button>:<Button variant="outline" onClick={() => setPage(3)} size="icon">
-            3
-          </Button>}
-          <Button variant="outline" size="icon">
-            &gt;
-          </Button>
+          <div className="flex gap-1">
+            {pageCount==1 ?  <Button variant="outline" size="icon" onClick={() => {setPage(1)}}   className="bg-primary text-primary-foreground">1</Button>:<Button variant="outline" size="icon" onClick={() => {setPage(1),bookpages(0,12)}}>1</Button>}
+            {pageCount ==2 ? <Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(2)} size="icon">
+              2
+            </Button> : <Button variant="outline" onClick={() => {bookpages(1,12)}} size="icon">
+              2
+            </Button>}
+            {pageCount ==3 ?<Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(3)} size="icon">
+              3
+            </Button>:<Button variant="outline" onClick={() => setPage(3)} size="icon">
+              3
+            </Button>}
         </div>
       </div>
     </div>
