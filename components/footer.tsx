@@ -11,10 +11,10 @@ export default function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <BookOpen className="h-6 w-6" />
-              <span className="text-xl font-bold">Modern Bookstore</span>
+              <span className="text-xl font-bold">Spring Bookstore</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Discover your next favorite book at Modern Bookstore, where stories come to life.
+              Discover your next favorite book at Spring Bookstore, where stories come to life.
             </p>
             <div className="flex gap-4">
               <Button variant="ghost" size="icon" asChild>
@@ -123,7 +123,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Modern Bookstore. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Spring Bookstore. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -51,7 +51,7 @@ export default function BookstorePage() {
     getAllBooks();
   },[]);
   
-
+    // {Comes From Server }  //
   const bookpages = async(pageNumber:number,pageper:number) =>{
     try{
       const getBooks = (await axios.get("http://localhost:8080/api/book/Books",{
@@ -87,6 +87,22 @@ export default function BookstorePage() {
     }
     return 0
   })
+
+
+  const Loader = () => {
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-muted">
+            <div className="relative w-12 h-12">
+                <div className="absolute inset-0 border-4 border-t-blue-500 border-gray-200 rounded-full animate-spin"></div>
+                <div className="absolute inset-1 border-2 border-t-cyan-400 border-transparent rounded-full animate-[spin_0.8s_ease-in-out_infinite_reverse]"></div>
+            </div>
+        </div>
+    );
+};
+
+  if(fetchBooks.length == 1){
+    return <Loader></Loader>
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6">
