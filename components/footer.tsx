@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { BookOpen, Facebook, Instagram, Twitter } from "lucide-react"
+import { BookOpen, Linkedin, Instagram, Twitter } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -18,19 +18,19 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/AmzDid" target="_blank" rel="noopener noreferrer">
                   <Twitter className="h-5 w-5" />
                   <span className="sr-only">Twitter</span>
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                  <Facebook className="h-5 w-5" />
+                <a href="https://www.linkedin.com/in/amir-ali-ziya-zadeh-19161b248/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer">
+                  <Linkedin  className="h-5 w-5" />
                   <span className="sr-only">Facebook</span>
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/amirziya.py?igsh=empvOWp6ZncwbHU5" target="_blank" rel="noopener noreferrer">
                   <Instagram className="h-5 w-5" />
                   <span className="sr-only">Instagram</span>
                 </a>

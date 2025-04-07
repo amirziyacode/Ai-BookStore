@@ -11,8 +11,8 @@ import Footer from "@/components/footer"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Modern Bookstore",
-  description: "A modern bookstore web application",
+  title: "Spring Bookstore",
+  description: "A Spring bookstore web application",
     generator: 'v0.dev'
 }
 
