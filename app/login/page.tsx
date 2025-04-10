@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/context/auth-context"
 import { useToast } from "@/hooks/use-toast"
 import { Eye, EyeOff } from "lucide-react"
+import axios from "axios"
 
 export default function AuthPage() {
   const router = useRouter()
@@ -61,30 +62,45 @@ export default function AuthPage() {
     }, 1500)
   }
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  async function handleSignupSubmit(e: React.FormEvent){
+    e.preventDefault();
 
+    const fullName = signupData.name
+    const email = signupData.email
+    const password = signupData.password
+
+    // TODO : Jwt Token
+    var token = "";
+
+    // TODO : Cheack Password 
     if (signupData.password !== signupData.confirmPassword) {
       toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    setIsSubmitting(true)
-
-    // Simulate signup
-    setTimeout(() => {
-      signup(signupData.email, signupData.name)
+            title: "Passwords don't match",
+            description: "Please make sure your passwords match.",
+           variant: "destructive",
+         })
+           alert("Please make sure your passwords match.")
+            return
+        }
+      setIsSubmitting(true)
+      
+    try {
+      token = (await axios.post("http://localhost:8080/api/auth/register",{  
+        fullName,
+        email,
+        password
+      })).data
+      // TODO register from Api
+      signup(signupData.email,signupData.name,token.access_token)
+      router.push("/")
+      setIsSubmitting(false)
       toast({
         title: "Account Created",
         description: "Welcome to Modern Bookstore!",
       })
-      router.push("/")
-      setIsSubmitting(false)
-    }, 1500)
+    } catch (error) {
+      console.error('Failed:', error);
+    }
   }
 
   return (
@@ -174,7 +190,7 @@ export default function AuthPage() {
           <Card>
             <CardHeader>
               <CardTitle>Create an Account</CardTitle>
-              <CardDescription>Join Modern Bookstore to start your reading journey</CardDescription>
+              <CardDescription>Join Spring Bookstore to start your reading journey</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSignupSubmit} className="space-y-4">
@@ -283,7 +299,7 @@ export default function AuthPage() {
                     </Link>
                   </label>
                 </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button  type="submit" className="w-full"  disabled={isSubmitting}>
                   {isSubmitting ? "Creating account..." : "Create Account"}
                 </Button>
               </form>

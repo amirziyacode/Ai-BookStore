@@ -11,12 +11,26 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useCart } from "@/context/cart-context"
 import { useToast } from "@/hooks/use-toast"
 import { Minus, Plus, Trash2 } from "lucide-react"
+import { useAuth } from "@/context/auth-context"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart()
   const { toast } = useToast()
+  const router = useRouter()
   const [promoCode, setPromoCode] = useState("")
+  const {isAuthenticated} = useAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false)
+
+
+
+  // TODO : authentication 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login")
+    }
+  }, [isAuthenticated, router])
 
   const handleRemoveItem = (id: string) => {
     removeFromCart(id)

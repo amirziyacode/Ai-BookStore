@@ -9,7 +9,7 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   login: (email: string, name?: string) => void
-  signup: (email: string, name: string) => void
+  signup: (email: string, name: string,accessToken:string) => void
   logout: () => void
 }
 
@@ -30,7 +30,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Check for existing user session on mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user")
-    if (storedUser) {
+    const token = localStorage.getItem("token")
+    if (storedUser && token) {
       const parsedUser = JSON.parse(storedUser)
       setUser(parsedUser)
       setIsAuthenticated(true)
@@ -48,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("user", JSON.stringify(userData))
   }
 
-  const signup = (email: string, name: string) => {
+  const signup = (email: string, name: string,token:string) => {
     const userData: User = {
       id: "user-" + Date.now(),
       email,
@@ -57,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(userData)
     setIsAuthenticated(true)
     localStorage.setItem("user", JSON.stringify(userData))
+    localStorage.setItem("token",token)
   }
 
   const logout = () => {
