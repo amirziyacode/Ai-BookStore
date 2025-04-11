@@ -8,7 +8,7 @@ import type { User } from "@/lib/types"
 interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
-  login: (email: string, name?: string) => void
+  login: (email: string, accessToken:string,name?: string) => void
   signup: (email: string, name: string,accessToken:string) => void
   logout: () => void
 }

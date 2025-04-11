@@ -46,20 +46,36 @@ export default function AuthPage() {
     setSignupData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  async function handleLoginSubmit (e: React.FormEvent) {
     e.preventDefault()
+
+    const email = loginData.email;
+    const password = loginData.password;
+    // TODO : Jwt Token
+    var token = "";
+
     setIsSubmitting(true)
 
-    // Simulate login
-    setTimeout(() => {
-      login(loginData.email)
+    try{
+      token = (await axios.post("http://localhost:8080/api/auth/login",{  
+        email,
+        password
+
+      })).data.access_token
+      login(loginData.email,token)
+
+      // massage
       toast({
         title: "Login Successful",
         description: "Welcome back to Modern Bookstore!",
       })
       router.push("/")
+
       setIsSubmitting(false)
-    }, 1500)
+
+    }catch(error){
+      console.log("Error :" + error)
+    }
   }
 
   async function handleSignupSubmit(e: React.FormEvent){
@@ -89,9 +105,9 @@ export default function AuthPage() {
         fullName,
         email,
         password
-      })).data
+      })).data.access_token
       // TODO register from Api
-      signup(signupData.email,signupData.name,token.access_token)
+      signup(signupData.email,signupData.name,token)
       router.push("/")
       setIsSubmitting(false)
       toast({
