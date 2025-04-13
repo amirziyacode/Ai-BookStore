@@ -11,24 +11,7 @@ export default function BookstorePage() {
   const [genreFilter, setGenreFilter] = useState("all")
   const [sortBy, setSortBy] = useState("title")
   const [pageCount,setPage] = useState(1)
-  const [fetchBooks,setBooks] = useState([
-    {
-      id: 1,
-      title: "Grokking Algorithms",
-      author: "Aditya Y. Bhargava",
-      coverImage: "https://skybooks.ir/images/productImages/Grokking-Algorithms_EB1709675048.jpg",
-      price: 24.99,
-      rating: 5,
-      category: "computer science",
-      discount: 15,
-      isbn:"9781633438538",
-      paperback:322,
-      publisher:"Manning",
-      language:"English",
-      year:"2012",
-      description:"An Illustrated Guide for Programmers and Other Curious People  A friendly, fully-illustrated introduction to the most important computer programming algorithms.Master the most widely used algorithms and be fully prepared when you’re asked about them at your next job interview. With beautifully simple explanations, over 400 fun illustrations, and dozens of relevant examples, you’ll actually enjoy learning about algorithms with this fun and friendly guide! The first edition of Grokking Algorithms proved to over 100,000 readers that learning algorithms doesn't have to be complicated or boring! This revised second edition contains brand new coverage of trees, including binary search trees, balanced trees, B-trees and more. You’ll also discover fresh insights on data structure performance that takes account of modern CPUs. Plus, the book’s fully annotated code samples have been updated to Python 3.Foreword by Daniel Zingaro."
-    },
-  ]);
+  const [fetchBooks,setBooks] = useState([]);
 
 
   const genres = ["CRYPTOGRAPHY", "COMPUTER_SCIENCE", "MOTIVATION","LANGUAGE", "BIOGRAPHY"]
@@ -100,7 +83,7 @@ export default function BookstorePage() {
     );
 };
 
-  if(fetchBooks.length == 1){
+  if(fetchBooks.length == 0){
     return <Loader></Loader>
   }
 
