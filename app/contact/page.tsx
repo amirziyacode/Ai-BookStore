@@ -9,8 +9,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
+import axios from "axios"
+
+
 
 export default function ContactPage() {
+  const api = axios.create({
+    baseURL: 'http://localhost:8080/api/contact/addContact',
+  });
   const { toast } = useToast()
   const [formData, setFormData] = useState({
     name: "",
@@ -25,24 +31,60 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message Sent",
-        description: "Thank you for your message. We'll get back to you soon!",
+    // TODO : cheack is user authenticat
+    const token = localStorage.getItem("token")
+    console.log(token);
+    if(!token){
+      return redirect("/login");
+    }
+
+    const name = formData.name;
+    const email = formData.email;
+    const subject = formData.subject;
+    const massage =  formData.message;
+
+    api.interceptors.request.use(
+      (config) => {
+        const jwtToken = localStorage.getItem('token'); // Retrieve token dynamically
+        if (jwtToken) {
+          config.headers['Authorization'] = `Bearer ${jwtToken}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    try{
+      const respone = await api.post("http://localhost:8080/api/contact/addContact",{
+        name,
+        email,
+        subject,
+        massage
       })
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-      })
-      setIsSubmitting(false)
-    }, 1500)
+      setTimeout(() => {
+        toast({
+          title: "Message Sent",
+          description: "Thank you for your message. We'll get back to you soon!",
+        })
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        })
+        setIsSubmitting(false)
+      }, 1500)
+      if(respone.status === 403){
+        alert("You Can't Acsecc This Page");
+      }
+    }catch(error){
+      console.log("error:"+error);
+    }
+
   }
 
   return (
@@ -203,5 +245,9 @@ export default function ContactPage() {
       </div>
     </div>
   )
+}
+
+function redirect(arg0: string) {
+  throw new Error("Function not implemented.")
 }
 
