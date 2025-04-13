@@ -9,14 +9,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
-import axios from "axios"
+import router from "next/router"
 
 
 
 export default function ContactPage() {
-  const api = axios.create({
-    baseURL: 'http://localhost:8080/api/contact/addContact',
-  });
   const { toast } = useToast()
   const [formData, setFormData] = useState({
     name: "",
@@ -32,59 +29,65 @@ export default function ContactPage() {
   }
 
   const handleSubmit = async(e: React.FormEvent) => {
+    
     e.preventDefault()
     setIsSubmitting(true)
 
-    // TODO : cheack is user authenticat
-    const token = localStorage.getItem("token")
-    console.log(token);
-    if(!token){
-      return redirect("/login");
+  // Check if user is authenticated
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push("/login");
+    return;
+  }
+    const payload = {
+      fullName:formData.name,
+      email:formData.email,
+      subject:formData.subject,
+      message:formData.message
     }
 
-    const name = formData.name;
-    const email = formData.email;
-    const subject = formData.subject;
-    const massage =  formData.message;
 
-    api.interceptors.request.use(
-      (config) => {
-        const jwtToken = localStorage.getItem('token'); // Retrieve token dynamically
-        if (jwtToken) {
-          config.headers['Authorization'] = `Bearer ${jwtToken}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
-    try{
-      const respone = await api.post("http://localhost:8080/api/contact/addContact",{
-        name,
-        email,
-        subject,
-        massage
-      })
-      setTimeout(() => {
-        toast({
-          title: "Message Sent",
-          description: "Thank you for your message. We'll get back to you soon!",
-        })
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        })
-        setIsSubmitting(false)
-      }, 1500)
-      if(respone.status === 403){
-        alert("You Can't Acsecc This Page");
+    try {
+      const response = await fetch("http://localhost:8080/api/contact/addContact", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+  
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    }catch(error){
-      console.log("error:"+error);
+  
+      // Parse the JSON response
+      const data = await response.json();
+      alert(data.Massage);
+  
+      toast({
+        title: data.Massage,
+        description: "Thank you for your message. We'll get back to you soon!",
+      });
+      
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      setIsSubmitting(true);
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive"
+      });
+    }finally{
+      setIsSubmitting(false)
     }
-
   }
 
   return (
