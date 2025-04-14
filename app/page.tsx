@@ -1,10 +1,31 @@
+"use client";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
-import { featuredBooks } from "@/lib/data"
 import BookCard from "@/components/book-card"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 export default function Home() {
+  const [featuredBooks,setBooks] = useState([]);
+
+  useEffect(() => {
+   const  fetchBooks =async()  => {
+    try{
+      const response = await axios.get("http://localhost:8080/api/book/findBestSeller",{
+        params:{
+          books:"4"
+        }
+      }) 
+
+      setBooks(response.data);
+    }catch(error){
+      console.log("Error : " + error);
+    }
+   }
+   fetchBooks();
+  },[]);
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
