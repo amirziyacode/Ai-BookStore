@@ -1,26 +1,25 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/hooks/use-toast"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
 import router from "next/router"
-
+import { toast } from 'react-toastify';
 
 
 export default function ContactPage() {
-  const { toast } = useToast()
+  const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   })
+
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -33,12 +32,7 @@ export default function ContactPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
-  // Check if user is authenticated
-  const token = localStorage.getItem("token");
-  if (!token) {
-    router.push("/login");
-    return;
-  }
+
     const payload = {
       fullName:formData.name,
       email:formData.email,
@@ -65,11 +59,8 @@ export default function ContactPage() {
       // Parse the JSON response
       const data = await response.json();
       alert(data.Massage);
-  
-      toast({
-        title: data.Massage,
-        description: "Thank you for your message. We'll get back to you soon!",
-      });
+
+      toast.success(`Hello, ${formData.name}! your massage submitted successfully!`);
       
       setFormData({
         name: "",
@@ -77,14 +68,11 @@ export default function ContactPage() {
         subject: "",
         message: "",
       });
+
       setIsSubmitting(true);
     } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive"
-      });
+    
+      toast.error("Error :"+error);
     }finally{
       setIsSubmitting(false)
     }
