@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,6 +14,7 @@ interface AccountDetailsProps {
 }
 
 export default function AccountDetails({ user }: AccountDetailsProps) {
+  const token = localStorage.getItem("token")
   const { toast } = useToast()
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
@@ -26,6 +27,30 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
     zipCode: user.zipCode || "",
     country: user.country || "United States",
   })
+
+  useEffect(() => {
+    const getAccountDetails = async() =>{
+      try{
+        const response = await fetch("http://localhost:8080/api/account/getAccount?"+new URLSearchParams({
+          email:formData.email
+        }), {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+
+      const data = await response.json();
+      setFormData(data)
+      }catch(error){
+        console.log("Error : "+ error)
+      }
+    }
+
+    getAccountDetails();
+
+  },[]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
