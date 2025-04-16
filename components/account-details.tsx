@@ -25,7 +25,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
     city: user.city || "",
     state: user.state || "",
     zipCode: user.zipCode || "",
-    country: user.country || "United States",
+    country: user.country || "",
   })
 
   useEffect(() => {
@@ -57,16 +57,37 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate saving user data
-    setTimeout(() => {
-      toast({
-        title: "Profile Updated",
-        description: "Your account details have been updated successfully.",
+    const payload = {
+      fullName:formData.name,
+      phoneNumber:formData.phone,
+      address:formData.address,
+      city:formData.city,
+      state:formData.state,
+      country:formData.country,
+      zipCode:formData.zipCode
+    }
+
+    try{
+      const response = await fetch("http://localhost:8080/api/account/setAccount?"+new URLSearchParams({
+        email:formData.email
+      }), {
+        method:"PUT",
+        headers : {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body:JSON.stringify(payload)
       })
+      if(response.status === 200){
       setIsEditing(false)
-    }, 1000)
+      }
+
+    }catch(error){
+      console.log("Error"+error)
+    }
+
   }
 
   return (
