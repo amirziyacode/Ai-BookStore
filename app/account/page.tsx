@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -11,10 +11,12 @@ import OrderHistory from "@/components/order-history"
 import Notifications from "@/components/notifications"
 // Add this import at the top of the file
 import MyMessages from '@/components/my-messages'
+import axios from "axios"
 
 export default function AccountPage() {
   const router = useRouter()
   const { user, isAuthenticated, logout } = useAuth()
+  const [name,setName] = useState('')
   const { toast } = useToast()
 
   useEffect(() => {
@@ -32,6 +34,27 @@ export default function AccountPage() {
     router.push("/")
   }
 
+  useEffect(() => {
+    const getAccount = async() =>{
+      try{
+        const token = localStorage.getItem("token")
+        const response = await axios.get("http://localhost:8080/api/account/getAccount",{
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          params:{
+            email:user?.email
+          }
+        }
+        )
+        setName(response.data.name)
+      }catch(error){
+        console.log("Error: "+error)
+      }
+    }
+    getAccount()
+  },[]);
+
   if (!isAuthenticated || !user) {
     return null
   }
@@ -41,7 +64,7 @@ export default function AccountPage() {
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-3xl font-bold">My Account</h1>
-          <p className="text-gray-500">Welcome back, {user.name || user.email}</p>
+          <p className="text-gray-500">Welcome back, {name}</p>
         </div>
         <Button variant="outline" onClick={handleLogout}>
           Logout

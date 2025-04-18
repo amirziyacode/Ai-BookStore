@@ -1,13 +1,12 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState } from "react"
+import {useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
-import router from "next/router"
 import { toast } from 'react-toastify';
 
 

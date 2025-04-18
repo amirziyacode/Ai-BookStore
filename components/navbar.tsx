@@ -116,7 +116,7 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem className="font-medium">{user?.name || user?.email}</DropdownMenuItem>
+                <DropdownMenuItem className="font-medium">{user?.email}</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/account">My Account</Link>
@@ -126,6 +126,9 @@ export default function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/account?tab=notifications">Notifications</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/account?tab=massage">MyMassage</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => logout()}>
