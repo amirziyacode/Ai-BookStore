@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar"
 import { AuthProvider } from "@/context/auth-context"
 import { CartProvider } from "@/context/cart-context"
 import Footer from "@/components/footer"
+import { AIChatBox } from "@/components/ai-chat-box"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,6 +32,7 @@ export default function RootLayout({
                 <Navbar />
                 <main className="flex-1">{children}</main>
                 <Footer />
+                <AIChatBox />
               </div>
             </CartProvider>
           </AuthProvider>
