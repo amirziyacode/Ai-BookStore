@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast"
 import AccountDetails from "@/components/account-details"
 import OrderHistory from "@/components/order-history"
 import Notifications from "@/components/notifications"
+// Add this import at the top of the file
+import MyMessages from '@/components/my-messages'
 
 export default function AccountPage() {
   const router = useRouter()
@@ -47,10 +49,11 @@ export default function AccountPage() {
       </div>
 
       <Tabs defaultValue="details" className="w-full">
-        <TabsList className="mb-8 grid w-full grid-cols-3">
+        <TabsList className="mb-8 grid w-full grid-cols-4">
           <TabsTrigger value="details">Account Details</TabsTrigger>
           <TabsTrigger value="orders">My Orders</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="messages">My Messages</TabsTrigger>
         </TabsList>
 
         <TabsContent value="details">
@@ -64,6 +67,11 @@ export default function AccountPage() {
         <TabsContent value="notifications">
           <Notifications />
         </TabsContent>
+
+        <TabsContent value="messages">
+          <MyMessages />
+        </TabsContent>
+
       </Tabs>
     </div>
   )
