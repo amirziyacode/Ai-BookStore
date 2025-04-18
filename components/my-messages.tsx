@@ -3,6 +3,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { formatDistanceToNow } from 'date-fns'
 import axios from 'axios'
+import type { User } from "@/lib/types"
+
+interface AccountDetailsProps {
+  user: User
+}
 
 interface Message {
   id: string
@@ -12,7 +17,7 @@ interface Message {
   status: 'pending' | 'replied'
 }
 
-export default function MyMessages() {
+export default function MyMessages({user}:AccountDetailsProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -20,9 +25,12 @@ export default function MyMessages() {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('token')
-        const response = await axios.get('http://localhost:8080/api/contact/messages', {
+        const response = await axios.get('http://localhost:8080/api/account/getMyMassages', {
           headers: {
             Authorization: `Bearer ${token}`
+          },
+          params:{
+            email:user.email
           }
         })
         setMessages(response.data)

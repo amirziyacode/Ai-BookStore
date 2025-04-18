@@ -69,7 +69,7 @@ export default function AccountPage() {
         </TabsContent>
 
         <TabsContent value="messages">
-          <MyMessages />
+          <MyMessages user={user} />
         </TabsContent>
 
       </Tabs>
