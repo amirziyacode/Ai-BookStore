@@ -57,11 +57,13 @@ export default function AuthPage() {
     setIsSubmitting(true)
 
     try{
-      token = (await axios.post("http://localhost:8080/api/auth/login",{  
+      const response = await axios.post("http://localhost:8080/api/auth/login",{  
         email,
         password
 
-      })).data.access_token
+      })
+
+      token = response.data.access_token
       login(loginData.email,token)
 
       // massage
@@ -74,7 +76,8 @@ export default function AuthPage() {
       setIsSubmitting(false)
 
     }catch(error){
-      console.log("Error :" + error)
+      alert("You don't have an account ")
+      setIsSubmitting(false)
     }
   }
 

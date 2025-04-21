@@ -8,6 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import type { User } from "@/lib/types"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/context/auth-context"
+import { useCart } from "@/context/cart-context"
 
 interface AccountDetailsProps {
   user: User
@@ -15,8 +18,11 @@ interface AccountDetailsProps {
 
 export default function AccountDetails({ user }: AccountDetailsProps) {
   const token = localStorage.getItem("token")
-  const { toast } = useToast()
   const [isEditing, setIsEditing] = useState(false)
+  const {logout} = useAuth()
+  const { toast } = useToast()
+  const {clearCart} = useCart()
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: user.name || "",
     email: user.email,
@@ -27,6 +33,17 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
     zipCode: user.zipCode || "",
     country: user.country || "",
   })
+
+  // TODO : logOut
+  const handleLogout = () => {
+    clearCart()
+    logout()
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    })
+    router.push("/")
+  }
 
   useEffect(() => {
     const getAccountDetails = async() =>{
@@ -40,11 +57,16 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
             'Authorization': `Bearer ${token}`
           },
         });
+        // jwt Expired
+        if (response.status === 401) {
+          alert("You Can't Accses This Page !")
+          handleLogout()
+        }
 
       const data = await response.json();
+
       setFormData(data)
       }catch(error){
-        console.log("Error : "+ error)
       }
     }
 

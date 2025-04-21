@@ -25,7 +25,7 @@ export default function MyMessages({user}:AccountDetailsProps) {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem('token')
-        const response = await axios.get('http://localhost:8080/api/account/getMyMassages', {
+        const response = await axios.get('http://localhost:8080/api/contact/getMyMassages', {
           headers: {
             Authorization: `Bearer ${token}`
           },

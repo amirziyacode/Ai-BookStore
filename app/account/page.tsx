@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast"
 import AccountDetails from "@/components/account-details"
 import OrderHistory from "@/components/order-history"
 import Notifications from "@/components/notifications"
-// Add this import at the top of the file
 import MyMessages from '@/components/my-messages'
 import axios from "axios"
 
@@ -47,9 +46,10 @@ export default function AccountPage() {
           }
         }
         )
+        console.log(response.status);
+        
         setName(response.data.name)
       }catch(error){
-        console.log("Error: "+error)
       }
     }
     getAccount()
