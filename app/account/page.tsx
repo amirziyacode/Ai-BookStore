@@ -46,8 +46,7 @@ export default function AccountPage() {
           }
         }
         )
-        console.log(response.status);
-        
+      
         setName(response.data.name)
       }catch(error){
       }

@@ -57,7 +57,8 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
             'Authorization': `Bearer ${token}`
           },
         });
-        // jwt Expired
+
+        // TODO : jwt Expired
         if (response.status === 401) {
           alert("You Can't Accses This Page !")
           handleLogout()
