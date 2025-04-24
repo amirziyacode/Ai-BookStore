@@ -59,10 +59,11 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
         });
 
         // TODO : jwt Expired
-        if (response.status === 401) {
-          alert("You Can't Accses This Page !")
-          handleLogout()
-        }
+        console.log(token)
+        // if (response.status === 401) {
+        //   alert("You Can't Accses This Page !")
+        //   handleLogout()
+        // }
 
       const data = await response.json();
 

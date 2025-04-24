@@ -38,15 +38,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [])
 
-  const login = (email: string, name?: string) => {
+  const login = (email: string, token:string) => {
     const userData: User = {
       id: "user-" + Date.now(),
       email,
-      name: name || email.split("@")[0],
     }
     setUser(userData)
     setIsAuthenticated(true)
     localStorage.setItem("user", JSON.stringify(userData))
+    localStorage.setItem("token",token)
   }
 
   const signup = (email: string, name: string,token:string) => {
