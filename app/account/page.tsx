@@ -46,8 +46,7 @@ export default function AccountPage() {
           }
         }
         )
-      
-        setName(response.data.name)
+      setName(response.data.name)
       }catch(error){
       }
     }

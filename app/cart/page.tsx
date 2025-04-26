@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -14,14 +13,33 @@ import { Minus, Plus, Trash2 } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import axios from "axios"
+import { CartItem } from "@/lib/types"
+
+interface OrderRequest {
+  items: CartItem[];
+  subTotal: number;
+  tax: number;
+  total: number;
+}
+
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart()
   const { toast } = useToast()
+  const {user} = useAuth();
   const router = useRouter()
   const [promoCode, setPromoCode] = useState("")
   const {isAuthenticated} = useAuth();
   const [isCheckingOut, setIsCheckingOut] = useState(false)
+
+  // Calculate order summary
+  const subTotal = cartTotal
+  const shipping = subTotal > 35 ? 0 : 4.99
+  const tax = subTotal * 0.1 // 10% tax
+  const discount = promoCode.toLowerCase() === "bookworm" ? subTotal * 0.1 : 0
+  const total = subTotal + shipping + tax - discount
+  
 
 
 
@@ -30,6 +48,7 @@ export default function CartPage() {
     if (!isAuthenticated) {
       router.push("/login")
     }
+    console.log(cart)
   }, [isAuthenticated, router])
 
   const handleRemoveItem = (id: string) => {
@@ -61,26 +80,40 @@ export default function CartPage() {
     }
   }
 
-  const handleCheckout = () => {
+  const handleCheckout = async() => {
     setIsCheckingOut(true)
+    try{
+      const token = localStorage.getItem('token')
+      const OrderRequest:OrderRequest = {
+        items:cart,
+        subTotal:subTotal,
+        tax:tax,
+        total:total
+      }
+      const response = await axios({
+        method: 'post',
+        url: `http://localhost:8080/api/order/addOrder/${user?.email}`,
+        data: OrderRequest,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-    // Simulate checkout process
-    setTimeout(() => {
+      console.log(response.data)
+
       toast({
         title: "Order placed successfully",
         description: "Thank you for your purchase!",
       })
       clearCart()
       setIsCheckingOut(false)
-    }, 2000)
+
+    }catch(error){
+      alert(error)
+    }
   }
 
-  // Calculate order summary
-  const subtotal = cartTotal
-  const shipping = subtotal > 35 ? 0 : 4.99
-  const tax = subtotal * 0.1 // 10% tax
-  const discount = promoCode.toLowerCase() === "bookworm" ? subtotal * 0.1 : 0
-  const total = subtotal + shipping + tax - discount
 
   return (
     <div className="container mx-auto px-4 py-8 md:px-6">
@@ -169,7 +202,7 @@ export default function CartPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>${subTotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
@@ -209,8 +242,8 @@ export default function CartPage() {
                 <div className="rounded-lg bg-muted p-4 text-sm">
                   <p className="font-medium">Free shipping on orders over $35</p>
                   <p className="text-muted-foreground">
-                    {subtotal < 35 ? (
-                      <>Add ${(35 - subtotal).toFixed(2)} more to qualify for free shipping</>
+                    {subTotal < 35 ? (
+                      <>Add ${(35 - subTotal).toFixed(2)} more to qualify for free shipping</>
                     ) : (
                       <>Your order qualifies for free shipping</>
                     )}

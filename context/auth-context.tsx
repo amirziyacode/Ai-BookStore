@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [])
 
-  const login = (email: string, token:string) => {
+  const login = (email: string,token:string) => {
     const userData: User = {
       id: "user-" + Date.now(),
       email,

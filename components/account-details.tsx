@@ -17,7 +17,6 @@ interface AccountDetailsProps {
 }
 
 export default function AccountDetails({ user }: AccountDetailsProps) {
-  const token = localStorage.getItem("token")
   const [isEditing, setIsEditing] = useState(false)
   const {logout} = useAuth()
   const { toast } = useToast()
@@ -48,6 +47,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
   useEffect(() => {
     const getAccountDetails = async() =>{
       try{
+        const token = localStorage.getItem("token")
         const response = await fetch("http://localhost:8080/api/account/getAccount?"+new URLSearchParams({
           email:formData.email
         }), {
@@ -59,11 +59,10 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
         });
 
         // TODO : jwt Expired
-        console.log(token)
-        // if (response.status === 401) {
-        //   alert("You Can't Accses This Page !")
-        //   handleLogout()
-        // }
+        if (response.status === 401) {
+          alert("You Can't Accses This Page !")
+          handleLogout()
+        }
 
       const data = await response.json();
 
@@ -94,6 +93,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
     }
 
     try{
+      const token = localStorage.getItem("token")
       const response = await fetch("http://localhost:8080/api/account/setAccount?"+new URLSearchParams({
         email:formData.email
       }), {
