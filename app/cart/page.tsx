@@ -48,7 +48,6 @@ export default function CartPage() {
     if (!isAuthenticated) {
       router.push("/login")
     }
-    console.log(cart)
   }, [isAuthenticated, router])
 
   const handleRemoveItem = (id: string) => {
@@ -84,6 +83,7 @@ export default function CartPage() {
     setIsCheckingOut(true)
     try{
       const token = localStorage.getItem('token')
+      console.log(token)
       const OrderRequest:OrderRequest = {
         items:cart,
         subTotal:subTotal,
@@ -100,7 +100,7 @@ export default function CartPage() {
         }
       });
 
-      console.log(response.data)
+      alert(response.data.massage)
 
       toast({
         title: "Order placed successfully",

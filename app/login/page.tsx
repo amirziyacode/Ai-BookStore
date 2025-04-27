@@ -65,7 +65,7 @@ export default function AuthPage() {
 
       // TODO : get Token from server
       token = response.data.access_token
-      login(loginData.email,"",token)
+      login(loginData.email,token)
 
       // massage
       toast({

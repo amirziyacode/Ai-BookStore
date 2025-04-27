@@ -59,7 +59,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
         });
 
         // TODO : jwt Expired
-        if (response.status === 401) {
+        if (response.status === 401 || response.status === 403) {
           alert("You Can't Accses This Page !")
           handleLogout()
         }
