@@ -63,6 +63,11 @@ export default function AuthPage() {
 
       })
 
+      // TODO : for not found email from server
+      if(response.status === 404){
+        alert("You don't have an account !")
+      }
+
       // TODO : get Token from server
       token = response.data.access_token
       login(loginData.email,token)
