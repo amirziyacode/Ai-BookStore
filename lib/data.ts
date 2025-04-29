@@ -12,26 +12,27 @@ export const orders: Order[] = [
         author: "Matt Haig",
         price: 14.99,
         quantity: 1,
+        coverImage:"coverImage"
       },
       {
         title: "Atomic Habits",
         author: "James Clear",
         price: 11.99,
         quantity: 1,
+        coverImage:"coverImage"
       },
     ],
     subtotal: 26.98,
-    shipping: 4.99,
     tax: 2.7,
     total: 34.67,
-    shipping_address: {
-      name: "John Doe",
-      street: "123 Main St",
-      city: "Anytown",
-      state: "CA",
-      zip: "12345",
-      country: "United States",
-    },
+    // shipping_address: {
+    //   name: "John Doe",
+    //   street: "123 Main St",
+    //   city: "Anytown",
+    //   state: "CA",
+    //   zip: "12345",
+    //   country: "United States",
+    // },
   },
   {
     id: "ORD-2023-1002",
@@ -43,20 +44,20 @@ export const orders: Order[] = [
         author: "Andy Weir",
         price: 14.99,
         quantity: 1,
+        coverImage:"coverImage"
       },
     ],
     subtotal: 14.99,
-    shipping: 4.99,
     tax: 1.5,
     total: 21.48,
-    shipping_address: {
-      name: "John Doe",
-      street: "123 Main St",
-      city: "Anytown",
-      state: "CA",
-      zip: "12345",
-      country: "United States",
-    },
+    // shipping_address: {
+    //   name: "John Doe",
+    //   street: "123 Main St",
+    //   city: "Anytown",
+    //   state: "CA",
+    //   zip: "12345",
+    //   country: "United States",
+    // },
   },
   {
     id: "ORD-2023-1003",
@@ -68,32 +69,34 @@ export const orders: Order[] = [
         author: "Kristin Hannah",
         price: 14.99,
         quantity: 1,
+        coverImage:"coverImage"
       },
       {
         title: "The Vanishing Half",
         author: "Brit Bennett",
         price: 13.99,
         quantity: 1,
+        coverImage:"coverImage"
       },
       {
         title: "Educated",
         author: "Tara Westover",
         price: 12.99,
         quantity: 1,
+        coverImage:"coverImage"
       },
     ],
     subtotal: 41.97,
-    shipping: 0.0,
     tax: 4.2,
     total: 46.17,
-    shipping_address: {
-      name: "John Doe",
-      street: "123 Main St",
-      city: "Anytown",
-      state: "CA",
-      zip: "12345",
-      country: "United States",
-    },
+    // shipping_address: {
+    //   name: "John Doe",
+    //   street: "123 Main St",
+    //   city: "Anytown",
+    //   state: "CA",
+    //   zip: "12345",
+    //   country: "United States",
+    // },
   },
 ]
 

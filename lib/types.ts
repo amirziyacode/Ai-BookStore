@@ -46,20 +46,20 @@ export interface Order {
     title: string
     author: string
     price: number
+    coverImage:string
     quantity: number
   }[]
   subtotal: number
-  shipping: number
   tax: number
   total: number
-  shipping_address: {
-    name: string
-    street: string
-    city: string
-    state: string
-    zip: string
-    country: string
-  }
+  // shipping_address: {
+  //   name: string
+  //   street: string
+  //   city: string
+  //   state: string
+  //   zip: string
+  //   country: string
+  // }
 }
 
 export interface Notification {

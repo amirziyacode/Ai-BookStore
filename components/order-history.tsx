@@ -1,17 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { orders } from "@/lib/data"
+import axios from "axios"
+import { useAuth } from "@/context/auth-context"
+
 
 export default function OrderHistory() {
   const [filter, setFilter] = useState("all")
+  const [OrderHistory,setOrder] = useState(orders)
+  const {user} = useAuth()
 
-  const filteredOrders = filter === "all" ? orders : orders.filter((order) => order.status === filter)
+  useEffect(() => {
+    const getOrderHistory = async() => {
+      try{
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`http://localhost:8080/api/order/getAllOrders/${user?.email}`,{
+          headers:{
+            Authorization: `Bearer ${token}`
+          }
+        })
+        console.log(response.data)
+        setOrder(response.data)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    getOrderHistory()
+  },[])
+
+
+  const filteredOrders = filter === "all" ? OrderHistory : OrderHistory.filter((order) => order.status === filter)
 
   return (
     <Card>
@@ -74,7 +98,10 @@ export default function OrderHistory() {
                           }`}
                         >
                           <div className="flex items-center gap-4">
-                            <div className="h-16 w-12 rounded bg-muted"></div>
+                          <img 
+                              className="h-16 w-12 rounded object-cover" 
+                              src={item.coverImage} 
+                              alt="order-Image"/>
                             <div>
                               <h4 className="font-medium">{item.title}</h4>
                               <p className="text-sm text-muted-foreground">{item.author}</p>
@@ -96,10 +123,6 @@ export default function OrderHistory() {
                           <span>${order.subtotal.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>Shipping</span>
-                          <span>${order.shipping.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between">
                           <span>Tax</span>
                           <span>${order.tax.toFixed(2)}</span>
                         </div>
@@ -110,7 +133,7 @@ export default function OrderHistory() {
                       </div>
                     </div>
 
-                    <div className="rounded-lg border p-4">
+                    {/* <div className="rounded-lg border p-4">
                       <h4 className="mb-2 font-medium">Shipping Information</h4>
                       <div className="space-y-1 text-sm">
                         <p>{order.shipping_address.name}</p>
@@ -120,7 +143,7 @@ export default function OrderHistory() {
                         </p>
                         <p>{order.shipping_address.country}</p>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="flex flex-wrap gap-2">
                       <Button variant="outline" size="sm">
