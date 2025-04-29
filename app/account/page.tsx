@@ -24,13 +24,25 @@ export default function AccountPage() {
     }
   }, [isAuthenticated, router])
 
-  const handleLogout = () => {
-    logout()
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out.",
-    })
-    router.push("/")
+  const handleLogout = async() => {
+    try{
+      const token = localStorage.getItem("token")
+      const response = await axios.get("http://localhost:8080/api/auth/logout",{
+        headers:{
+          Authorization : `Bearer ${token}`
+        }
+      })
+
+      logout()
+
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      })
+      router.push("/")
+    }catch(error){
+      console.log(error)
+    }
   }
 
   useEffect(() => {

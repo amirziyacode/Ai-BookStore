@@ -17,6 +17,7 @@ import { useAuth } from "@/context/auth-context"
 import { useCart } from "@/context/cart-context"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Menu,ShoppingCart, User, LogIn, LogOut, BookOpen } from "lucide-react"
+import axios from "axios"
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -34,6 +35,21 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const handlerLogout = async() => {
+    try{
+      const token = localStorage.getItem("token")
+      const response = await axios.get("http://localhost:8080/api/auth/logout",{
+        headers:{
+          Authorization : `Bearer ${token}`
+        }
+      })
+
+      logout()
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -131,7 +147,7 @@ export default function Navbar() {
                   <Link href="/account?tab=massage">MyMassage</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => logout()}>
+                <DropdownMenuItem onClick={() => handlerLogout()}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
                 </DropdownMenuItem>

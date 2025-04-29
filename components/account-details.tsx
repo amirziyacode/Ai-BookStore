@@ -11,6 +11,7 @@ import type { User } from "@/lib/types"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/context/auth-context"
 import { useCart } from "@/context/cart-context"
+import axios from "axios"
 
 interface AccountDetailsProps {
   user: User
@@ -34,14 +35,26 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
   })
 
   // TODO : logOut
-  const handleLogout = () => {
+  const handleLogout = async() => {
     clearCart()
-    logout()
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out.",
-    })
-    router.push("/")
+    try{
+      const token = localStorage.getItem("token")
+      const response = await axios.get("http://localhost:8080/api/auth/logout",{
+        headers:{
+          Authorization : `Bearer ${token}`
+        }
+      })
+
+      logout()
+
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      })
+      router.push("/")
+    }catch(error){
+      console.log(error)
+    }
   }
 
   useEffect(() => {
