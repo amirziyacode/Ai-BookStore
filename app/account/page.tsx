@@ -27,7 +27,7 @@ export default function AccountPage() {
   const handleLogout = async() => {
     try{
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/auth/logout",{
+      await axios.get("http://localhost:8080/api/auth/logout",{
         headers:{
           Authorization : `Bearer ${token}`
         }

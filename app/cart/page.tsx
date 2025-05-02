@@ -100,7 +100,7 @@ export default function CartPage() {
         }
       });
 
-      alert(response.data.massage)
+      alert(response.data.Massage_Order)
 
       toast({
         title: "Order placed successfully",

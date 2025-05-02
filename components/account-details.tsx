@@ -37,9 +37,8 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
   // TODO : logOut
   const handleLogout = async() => {
     clearCart()
-    try{
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/auth/logout",{
+      await axios.get("http://localhost:8080/api/auth/logout",{
         headers:{
           Authorization : `Bearer ${token}`
         }
@@ -52,9 +51,6 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
         description: "You have been successfully logged out.",
       })
       router.push("/")
-    }catch(error){
-      console.log(error)
-    }
   }
 
   useEffect(() => {
