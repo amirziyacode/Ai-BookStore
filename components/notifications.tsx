@@ -18,14 +18,12 @@ export default function Notifications() {
   useEffect(() => {
     const getAllNotifications = async() =>{
       try{
-
         const getAllNotifications = await axios.get(`http://localhost:8080/api/notification/getAll/${user?.email}`,{
           headers:{
             Authorization:`Bearer ${token}`
           }
         })
-        console.log(getAllNotifications.data)
-        setActiveNotifications(getAllNotifications.data)
+       setActiveNotifications(await getAllNotifications.data)
       }catch(error){
         console.log(error)
       }
@@ -36,14 +34,12 @@ export default function Notifications() {
   const markAllAsRead = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // prevents page reload
     try{
-     const response =  await axios.put(`http://localhost:8080/api/notification/marksAllRead/${user?.email}`,{
-        headers:{
-           Authorization:`Bearer ${token}`
-        }
+     const response =  await axios.get(`http://localhost:8080/api/notification/marksAllRead/${user?.email.toString()}`,{
+      headers:{
+          Authorization:`Bearer ${token}`
+      }
       })
-
-      setActiveNotifications(response.data)
-
+      setActiveNotifications(await response.data)
     }catch(error){
       console.log(error)
     } 
@@ -52,11 +48,15 @@ export default function Notifications() {
   const deleteNotification = async(e: React.MouseEvent<HTMLButtonElement>,id: number) => {
     e.preventDefault(); // prevents page reload
     try{
-      await axios.delete(`http://localhost:8080/api/notification/deleteById/${id}`,{
+      const response = await axios.delete(`http://localhost:8080/api/notification/deleteById/${id}`,{
+        params:{
+          email:user?.email
+        },
         headers:{
            Authorization:`Bearer ${token}`
         }
       })
+      setActiveNotifications(await response.data)
     }catch(error){
       console.log(error)
     }
