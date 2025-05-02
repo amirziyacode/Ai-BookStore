@@ -1,21 +1,65 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Bell, Gift, ShoppingBag, Tag, Truck } from "lucide-react"
 import { notifications } from "@/lib/data"
+import axios from "axios"
+import { useAuth } from "@/context/auth-context"
 
 export default function Notifications() {
-  const [activeNotifications, setActiveNotifications] = useState(notifications)
 
-  const markAllAsRead = () => {
-    setActiveNotifications((prev) => prev.map((notification) => ({ ...notification, isRead: true })))
+  const token = localStorage.getItem('token')
+  const [activeNotifications, setActiveNotifications] = useState(notifications)
+  const {user} = useAuth()
+
+  useEffect(() => {
+    const getAllNotifications = async() =>{
+      try{
+
+        const getAllNotifications = await axios.get(`http://localhost:8080/api/notification/getAll/${user?.email}`,{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        })
+        console.log(getAllNotifications.data)
+        setActiveNotifications(getAllNotifications.data)
+      }catch(error){
+        console.log(error)
+      }
+    }
+    getAllNotifications()
+  },[])
+
+  const markAllAsRead = async(e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // prevents page reload
+    try{
+     const response =  await axios.put(`http://localhost:8080/api/notification/marksAllRead/${user?.email}`,{
+        headers:{
+           Authorization:`Bearer ${token}`
+        }
+      })
+
+      setActiveNotifications(response.data)
+
+    }catch(error){
+      console.log(error)
+    } 
   }
 
-  const deleteNotification = (id: string) => {
-    setActiveNotifications((prev) => prev.filter((notification) => notification.id !== id))
+  const deleteNotification = async(e: React.MouseEvent<HTMLButtonElement>,id: number) => {
+    e.preventDefault(); // prevents page reload
+    try{
+      await axios.delete(`http://localhost:8080/api/notification/deleteById/${id}`,{
+        headers:{
+           Authorization:`Bearer ${token}`
+        }
+      })
+    }catch(error){
+      console.log(error)
+    }
   }
 
   const getIcon = (type: string) => {
@@ -56,7 +100,7 @@ export default function Notifications() {
             <CardTitle>Notifications</CardTitle>
             <CardDescription>Stay updated with order status, promotions, and more</CardDescription>
           </div>
-          <Button variant="outline" onClick={markAllAsRead}>
+          <Button variant="outline" onClick={(e) => markAllAsRead(e)}>
             Mark all as read
           </Button>
         </div>
@@ -70,9 +114,9 @@ export default function Notifications() {
                 className={`flex gap-4 rounded-lg border p-4 ${!notification.isRead ? "bg-muted/40" : ""}`}
               >
                 <div
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${getIconColor(notification.type)}`}
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${getIconColor(notification.type.toLocaleLowerCase())}`}
                 >
-                  {getIcon(notification.type)}
+                  {getIcon(notification.type.toLocaleLowerCase())}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-2">
@@ -84,7 +128,7 @@ export default function Notifications() {
                       variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0"
-                      onClick={() => deleteNotification(notification.id)}
+                      onClick={(e) => deleteNotification(e,notification.id)}
                     >
                       <span className="sr-only">Delete</span>
                       <svg

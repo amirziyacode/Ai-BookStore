@@ -63,7 +63,7 @@ export interface Order {
 }
 
 export interface Notification {
-  id: string
+  id: number
   title: string
   message: string
   type: "order" | "delivery" | "promotion" | "gift" | "other"

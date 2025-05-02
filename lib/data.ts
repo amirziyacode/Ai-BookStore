@@ -102,7 +102,7 @@ export const orders: Order[] = [
 
 export const notifications: Notification[] = [
   {
-    id: "notif-1",
+    id: 1,
     title: "Order Shipped",
     message: "Your order #ORD-2023-1002 has been shipped and is on its way!",
     type: "delivery",
@@ -112,7 +112,7 @@ export const notifications: Notification[] = [
     actionLink: "/account?tab=orders",
   },
   {
-    id: "notif-2",
+    id: 2,
     title: "New Order Confirmation",
     message: "Thank you for your order #ORD-2023-1003. We're processing it now.",
     type: "order",
@@ -122,7 +122,7 @@ export const notifications: Notification[] = [
     actionLink: "/account?tab=orders",
   },
   {
-    id: "notif-3",
+    id: 3,
     title: "Summer Reading Sale",
     message: "Enjoy 20% off on all fiction books until June 30th!",
     type: "promotion",
@@ -132,7 +132,7 @@ export const notifications: Notification[] = [
     actionLink: "/bookstore",
   },
   {
-    id: "notif-4",
+    id:4,
     title: "Free Book with Purchase",
     message: "Spend $50 or more and get a free mystery book with your order!",
     type: "gift",
@@ -140,7 +140,7 @@ export const notifications: Notification[] = [
     isRead: true,
   },
   {
-    id: "notif-5",
+    id: 5,
     title: "Order Delivered",
     message: "Your order #ORD-2023-1001 has been delivered. Enjoy your books!",
     type: "delivery",

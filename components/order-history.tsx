@@ -25,7 +25,6 @@ export default function OrderHistory() {
             Authorization: `Bearer ${token}`
           }
         })
-        console.log(response.data)
         setOrder(response.data)
       }catch(error){
         console.log(error)
