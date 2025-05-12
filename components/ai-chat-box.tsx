@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { MessageCircle, X, Send } from "lucide-react"
 import { formatDistanceToNow } from 'date-fns'
-import axios from 'axios'
+import {useRef} from "react"
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -13,47 +13,70 @@ interface ChatMessage {
   timestamp: string
 }
 
+
+
 export function AIChatBox() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [isSending, setIsSending] = useState(false)
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim() || isSending) return
+  const assistantMessageRef = useRef<ChatMessage>({
+  role: 'assistant',
+  content: '',
+  timestamp: new Date().toISOString()
+});
 
-    setIsSending(true)
-    const userMessage: ChatMessage = {
-      role: 'user',
-      content: inputMessage,
-      timestamp: new Date().toISOString()
+
+const handleSendMessage = async () => {
+  if (!inputMessage.trim() || isSending) return;
+
+  setIsSending(true);
+
+  const userMessage: ChatMessage = {
+    role: 'user',
+    content: inputMessage,
+    timestamp: new Date().toISOString()
+  };
+
+  assistantMessageRef.current = {
+    role: 'assistant',
+    content: '',
+    timestamp: new Date().toISOString()
+  };
+
+  setMessages(prev => [...prev, userMessage, assistantMessageRef.current]);
+  setInputMessage('');
+
+  const eventSource = new EventSource(`http://localhost:8080/api/ai/ask-bot?message=${encodeURIComponent(inputMessage)}`);
+
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    const newChunk = data.message?.content || '';
+
+    assistantMessageRef.current.content += newChunk;
+
+    //  TODO : force update UI
+    setMessages(prev => {
+      const updated = [...prev];
+      updated[updated.length - 1] = { ...assistantMessageRef.current };
+      return updated;
+    });
+
+    if (data.done) {
+      eventSource.close();
+      setIsSending(false);
     }
-    setMessages(prev => [...prev, userMessage])
-    setInputMessage('')
+  };
 
-    try {
-      const token = localStorage.getItem('token')
-      const response = await axios.post('http://localhost:8080/api/chat/message', 
-        { message: inputMessage },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
+  eventSource.onerror = (err) => {
+    console.error("SSE error:", err);
+    eventSource.close();
+    setIsSending(false);
+  };
+};
 
-      const assistantMessage: ChatMessage = {
-        role: 'assistant',
-        content: response.data.reply,
-        timestamp: new Date().toISOString()
-      }
-      setMessages(prev => [...prev, assistantMessage])
-    } catch (error) {
-      console.error('Failed to send message:', error)
-    } finally {
-      setIsSending(false)
-    }
-  }
+
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
