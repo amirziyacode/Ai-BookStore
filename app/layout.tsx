@@ -14,7 +14,11 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Spring Bookstore",
   description: "A Spring bookstore web application",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  viewport: 'width=device-width, initial-scale=1',
+  icons: {
+    icon: '/favicon.ico',
+  }
 }
 
 export default function RootLayout({
@@ -23,14 +27,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <CartProvider>
               <div className="flex min-h-screen flex-col">
                 <Navbar />
-                <main className="flex-1">{children}</main>
+                <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
                 <Footer />
                 <AIChatBox />
               </div>

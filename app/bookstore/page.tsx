@@ -6,48 +6,75 @@ import BookCard from "@/components/book-card"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import axios from 'axios'
+import { Book } from "@/lib/types"
+
 export default function BookstorePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [genreFilter, setGenreFilter] = useState("all")
   const [sortBy, setSortBy] = useState("title")
-  const [pageCount,setPage] = useState(1)
-  const [fetchBooks,setBooks] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const [fetchBooks, setBooks] = useState<Book[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [totalPages, setTotalPages] = useState(1)
 
   const genres = ["CRYPTOGRAPHY", "COMPUTER_SCIENCE", "MOTIVATION","LANGUAGE", "BIOGRAPHY"]
 
-  // {Comes From Server} //
-  useEffect(() => {
-    const getAllBooks = async() =>{
-      try{
-        const getBooks = (await axios.get("http://localhost:8080/api/book/Books",{
-          params:{
-            pageNumber:0,
-            perPage:12
-          }
-        })).data.content
-        setBooks(getBooks);
-      }catch(error){
-        console.error('Error fetching books:', error);
-      }
+  const transformBookData = (data: any): Book => {
+    return {
+      id: Number(data.id),
+      title: data.title || '',
+      author: data.author || '',
+      description: data.description || '',
+      price: Number(data.price) || 0,
+      coverImage: data.coverImage || data.imageUrl || "/placeholder.svg?height=450&width=300",
+      rating: Number(data.rating) || 0,
+      category: data.category || '',
+      publisher: data.publisher || '',
+      year: String(data.year || ''),
+      paperback: Number(data.paperback) || 0,
+      language: data.language || '',
+      isbn: data.isbn || '',
+      discount: data.discount ? Number(data.discount) : 0,
+      new: data.new || false,
+      bestseller: data.bestseller || false
     }
-    getAllBooks();
-  },[]);
-  
-    // {Comes From Server }  //
-  const bookpages = async(pageNumber:number,pageper:number) =>{
-    try{
-      const getBooks = (await axios.get("http://localhost:8080/api/book/Books",{
-        params:{
-          pageNumber:pageNumber,
-          perPage:pageper
+  }
+
+  const fetchBooksData = async (pageNumber: number, perPage: number) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get("http://localhost:8080/api/book/Books", {
+        params: {
+          pageNumber: pageNumber,
+          perPage: perPage
         }
-      })).data.content
-      setBooks(getBooks);
-      setPage(pageNumber+1)
-    }catch(error){
+      });
+      
+      const transformedBooks = response.data.content.map(transformBookData);
+      setBooks(transformedBooks);
+      setTotalPages(Math.ceil(response.data.totalElements / perPage));
+    } catch(error) {
       console.error('Error fetching books:', error);
+      setError('Failed to fetch books. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
+  }
+
+  useEffect(() => {
+    fetchBooksData(0, 12);
+    return () => {
+      // Cleanup function to prevent memory leaks
+      setBooks([]);
+      setError(null);
+    };
+  }, []);
+
+  const handlePageChange = (pageNum: number) => {
+    setCurrentPage(pageNum);
+    fetchBooksData(pageNum - 1, 12);
   }
 
   const filteredBooks = fetchBooks.filter((book) => {
@@ -71,20 +98,38 @@ export default function BookstorePage() {
     return 0
   })
 
-
   const Loader = () => {
     return (
-        <div className="flex items-center justify-center min-h-screen bg-muted">
-            <div className="relative w-12 h-12">
-                <div className="absolute inset-0 border-4 border-t-blue-500 border-gray-200 rounded-full animate-spin"></div>
-                <div className="absolute inset-1 border-2 border-t-cyan-400 border-transparent rounded-full animate-[spin_0.8s_ease-in-out_infinite_reverse]"></div>
-            </div>
+      <div className="flex items-center justify-center min-h-screen bg-muted">
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 border-4 border-t-blue-500 border-gray-200 rounded-full animate-spin"></div>
+          <div className="absolute inset-1 border-2 border-t-cyan-400 border-transparent rounded-full animate-[spin_0.8s_ease-in-out_infinite_reverse]"></div>
         </div>
+      </div>
     );
-};
+  }
 
-  if(fetchBooks.length == 0){
-    return <Loader></Loader>
+  if (isLoading && fetchBooks.length === 0) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{error}</p>
+          <Button onClick={() => fetchBooksData(currentPage - 1, 12)}>Try Again</Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (fetchBooks.length === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-500">No books available at the moment.</p>
+      </div>
+    );
   }
 
   return (
@@ -144,20 +189,21 @@ export default function BookstorePage() {
         </div>
       )}
 
-            {/* Pagination */}
-            <div className="mt-8 flex justify-center">
-          <div className="flex gap-1">
-            {pageCount==1 ?  <Button variant="outline" size="icon" onClick={() => {setPage(1)}}   className="bg-primary text-primary-foreground">1</Button>:<Button variant="outline" size="icon" onClick={() => {setPage(1),bookpages(0,12)}}>1</Button>}
-            {pageCount ==2 ? <Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(2)} size="icon">
-              2
-            </Button> : <Button variant="outline" onClick={() => {bookpages(1,12)}} size="icon">
-              2
-            </Button>}
-            {pageCount ==3 ?<Button variant="outline" className="bg-primary text-primary-foreground" onClick={() => setPage(3)} size="icon">
-              3
-            </Button>:<Button variant="outline" onClick={() => setPage(3)} size="icon">
-              3
-            </Button>}
+      {/* Pagination */}
+      <div className="mt-8 flex justify-center">
+        <div className="flex gap-2">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <Button
+              key={pageNum}
+              variant="outline"
+              size="icon"
+              onClick={() => handlePageChange(pageNum)}
+              className={currentPage === pageNum ? "bg-primary text-primary-foreground" : ""}
+              disabled={isLoading}
+            >
+              {pageNum}
+            </Button>
+          ))}
         </div>
       </div>
     </div>
