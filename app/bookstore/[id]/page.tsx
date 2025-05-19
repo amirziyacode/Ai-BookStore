@@ -10,8 +10,7 @@ import { useCart } from "@/context/cart-context"
 import { ShoppingCart, Heart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import axios from "axios"
-
-
+import { motion } from "framer-motion"
 
 export default function BookDetailPage() {
   const params = useParams()
@@ -32,10 +31,8 @@ export default function BookDetailPage() {
     publisher:"Manning",
     language:"English",
     year:"2012",
-    description:"An Illustrated Guide for Programmers and Other Curious People  A friendly, fully-illustrated introduction to the most important computer programming algorithms.Master the most widely used algorithms and be fully prepared when you’re asked about them at your next job interview. With beautifully simple explanations, over 400 fun illustrations, and dozens of relevant examples, you’ll actually enjoy learning about algorithms with this fun and friendly guide! The first edition of Grokking Algorithms proved to over 100,000 readers that learning algorithms doesn't have to be complicated or boring! This revised second edition contains brand new coverage of trees, including binary search trees, balanced trees, B-trees and more. You’ll also discover fresh insights on data structure performance that takes account of modern CPUs. Plus, the book’s fully annotated code samples have been updated to Python 3.Foreword by Daniel Zingaro."
+    description:"An Illustrated Guide for Programmers and Other Curious People  A friendly, fully-illustrated introduction to the most important computer programming algorithms.Master the most widely used algorithms and be fully prepared when you're asked about them at your next job interview. With beautifully simple explanations, over 400 fun illustrations, and dozens of relevant examples, you'll actually enjoy learning about algorithms with this fun and friendly guide! The first edition of Grokking Algorithms proved to over 100,000 readers that learning algorithms doesn't have to be complicated or boring! This revised second edition contains brand new coverage of trees, including binary search trees, balanced trees, B-trees and more. You'll also discover fresh insights on data structure performance that takes account of modern CPUs. Plus, the book's fully annotated code samples have been updated to Python 3.Foreword by Daniel Zingaro."
   });
-
-  
 
   useEffect(() => {
     const getBookById = async() =>{
@@ -54,11 +51,13 @@ export default function BookDetailPage() {
     getBookById();
   },[])
 
-
-
   if (!fetchbook) {
     return (
-      <div className="container mx-auto flex h-[70vh] items-center justify-center px-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="container mx-auto flex h-[70vh] items-center justify-center px-4"
+      >
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Book Not Found</CardTitle>
@@ -70,7 +69,7 @@ export default function BookDetailPage() {
             </Button>
           </CardFooter>
         </Card>
-      </div>
+      </motion.div>
     )
   }
 
@@ -91,11 +90,24 @@ export default function BookDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:px-6">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="container mx-auto px-4 py-8 md:px-6"
+    >
       <div className="grid gap-8 md:grid-cols-2">
         {/* Book Image */}
-        <div className="flex items-center justify-center">
-          <div className="relative h-[500px] w-[350px] overflow-hidden rounded-lg shadow-lg">
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex items-center justify-center"
+        >
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="relative h-[500px] w-[350px] overflow-hidden rounded-lg shadow-lg"
+          >
             <Image
               src={fetchbook.coverImage || "/placeholder.svg?height=500&width=350"}
               alt={fetchbook.title}
@@ -103,64 +115,123 @@ export default function BookDetailPage() {
               className="object-cover"
               priority
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Book Details */}
-        <div className="flex flex-col space-y-6">
-          <div>
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col space-y-6"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
             <Badge className="mb-2">{fetchbook.category}</Badge>
             <h1 className="text-3xl font-bold">{fetchbook.title}</h1>
             <p className="text-lg text-gray-500">by {fetchbook.author}</p>
-          </div>
+          </motion.div>
 
-          <div className="flex items-center space-x-2">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center space-x-2"
+          >
             <div className="flex">
               {[...Array(5)].map((_, i) => (
-                <svg
+                <motion.svg
                   key={i}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.6 + i * 0.1 }}
                   className={`h-5 w-5 ${i < fetchbook.rating ? "text-yellow-400" : "text-gray-300"}`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
+                </motion.svg>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
             <h2 className="mb-2 text-xl font-semibold">Description</h2>
             <p className="text-gray-700 dark:text-gray-300">{fetchbook.description}</p>
-          </div>
-          <div className="flex items-center space-x-2">
-            <h2 className="text-2xl font-bold">${fetchbook.discount ==0 ? fetchbook.price.toFixed(2) : (fetchbook.price -  (fetchbook.price * fetchbook.discount)/100).toFixed(2)}</h2>
-            {fetchbook.discount !=0 && (
-              <span className="text-lg text-gray-500 line-through">${fetchbook.price.toFixed(2)}</span>
-            )}
-            {fetchbook.discount !=0 && (
-              <Badge
-                variant="outline"
-                className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="flex items-center space-x-2"
+          >
+            <h2 className="text-2xl font-bold">${fetchbook.discount == 0 ? fetchbook.price.toFixed(2) : (fetchbook.price - (fetchbook.price * fetchbook.discount)/100).toFixed(2)}</h2>
+            {fetchbook.discount != 0 && (
+              <motion.span 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9 }}
+                className="text-lg text-gray-500 line-through"
               >
-                {fetchbook.discount}% OFF
-              </Badge>
+                ${fetchbook.price.toFixed(2)}
+              </motion.span>
             )}
-          </div>
+            {fetchbook.discount != 0 && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1 }}
+              >
+                <Badge
+                  variant="outline"
+                  className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+                >
+                  {fetchbook.discount}% OFF
+                </Badge>
+              </motion.div>
+            )}
+          </motion.div>
 
-          <div className="flex space-x-4">
-            <Button onClick={handleAddToCart} className="flex-1">
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Add to Cart
-            </Button>
-            <Button variant="outline" onClick={handleToggleWishlist}>
-              <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current text-red-500" : ""}`} />
-            </Button>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1 }}
+            className="flex space-x-4"
+          >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
+              <Button onClick={handleAddToCart} className="w-full">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Add to Cart
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="outline" onClick={handleToggleWishlist}>
+                <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current text-red-500" : ""}`} />
+              </Button>
+            </motion.div>
+          </motion.div>
 
-          <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800"
+          >
             <h3 className="mb-2 font-semibold">Book Details</h3>
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.3 }}
+              className="grid grid-cols-2 gap-2 text-sm"
+            >
               <div>Publisher:</div>
               <div>{fetchbook.publisher}</div>
               <div>Year:</div>
@@ -171,11 +242,11 @@ export default function BookDetailPage() {
               <div>{fetchbook.language}</div>
               <div>ISBN:</div>
               <div>{fetchbook.isbn}</div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

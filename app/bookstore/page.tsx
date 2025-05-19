@@ -53,9 +53,13 @@ export default function BookstorePage() {
         }
       });
       
-      const transformedBooks = response.data.content.map(transformBookData);
-      setBooks(transformedBooks);
-      setTotalPages(Math.ceil(response.data.totalElements / perPage));
+      if (response.data && response.data.content) {
+        const transformedBooks = response.data.content.map(transformBookData);
+        setBooks(transformedBooks);
+        setTotalPages(Math.ceil(response.data.totalElements / perPage));
+      } else {
+        setError('Invalid response from server');
+      }
     } catch(error) {
       console.error('Error fetching books:', error);
       setError('Failed to fetch books. Please try again later.');
@@ -66,16 +70,14 @@ export default function BookstorePage() {
 
   useEffect(() => {
     fetchBooksData(0, 12);
-    return () => {
-      // Cleanup function to prevent memory leaks
-      setBooks([]);
-      setError(null);
-    };
   }, []);
 
-  const handlePageChange = (pageNum: number) => {
+  const handlePageChange = async (pageNum: number) => {
     setCurrentPage(pageNum);
-    fetchBooksData(pageNum - 1, 12);
+    await fetchBooksData(pageNum - 1, 12);
+    setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 100); 
   }
 
   const filteredBooks = fetchBooks.filter((book) => {
