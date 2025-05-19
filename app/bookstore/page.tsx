@@ -7,6 +7,7 @@ import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import axios from 'axios'
 import { Book } from "@/lib/types"
+import { motion } from "framer-motion"
 
 export default function BookstorePage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -109,102 +110,180 @@ export default function BookstorePage() {
     );
   }
 
-  if (isLoading && fetchBooks.length === 0) {
-    return <Loader />;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <p className="text-red-500 mb-4">{error}</p>
-          <Button onClick={() => fetchBooksData(currentPage - 1, 12)}>Try Again</Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (fetchBooks.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500">No books available at the moment.</p>
-      </div>
-    );
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 md:px-6">
-      <h1 className="mb-8 text-3xl font-bold">Bookstore</h1>
-
-      {/* Filters and Search */}
-      <div className="mb-8 grid gap-4 md:grid-cols-3">
-        <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-          <Input
-            type="text"
-            placeholder="Search by title or author"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8"
-          />
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-background py-16"
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="flex flex-col items-center text-center space-y-4"
+          >
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+              Discover Your Next Favorite Book
+            </h1>
+            <p className="max-w-[700px] text-muted-foreground md:text-xl">
+              Explore our vast collection of books across various genres. From bestsellers to new releases, find your perfect read.
+            </p>
+          </motion.div>
         </div>
+      </motion.div>
 
-        <Select value={genreFilter} onValueChange={setGenreFilter}>
-          <SelectTrigger>
-            <SelectValue placeholder="Filter by genre" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Genres</SelectItem>
-            {genres.map((genre) => (
-              <SelectItem key={genre} value={genre}>
-                {genre}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger>
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="title">Title (A-Z)</SelectItem>
-            <SelectItem value="author">Author (A-Z)</SelectItem>
-            <SelectItem value="price-low">Price (Low to High)</SelectItem>
-            <SelectItem value="price-high">Price (High to Low)</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Books Grid */}
-      {sortedBooks.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {sortedBooks.map((book) => (
-            <BookCard key={book.id} book={book} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex h-40 items-center justify-center rounded-lg border border-dashed">
-          <p className="text-center text-gray-500">No books found matching your criteria</p>
-        </div>
-      )}
-
-      {/* Pagination */}
-      <div className="mt-8 flex justify-center">
-        <div className="flex gap-2">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-            <Button
-              key={pageNum}
-              variant="outline"
-              size="icon"
-              onClick={() => handlePageChange(pageNum)}
-              className={currentPage === pageNum ? "bg-primary text-primary-foreground" : ""}
-              disabled={isLoading}
+      <div className="container mx-auto px-4 py-8 md:px-6">
+        {/* Filters and Search */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="mb-8 space-y-4"
+        >
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="relative flex-1"
             >
-              {pageNum}
-            </Button>
-          ))}
-        </div>
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search by title or author..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 bg-background/50 backdrop-blur-sm"
+              />
+            </motion.div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <motion.div whileHover={{ scale: 1.02 }}>
+                <Select value={genreFilter} onValueChange={setGenreFilter}>
+                  <SelectTrigger className="w-[180px] bg-background/50 backdrop-blur-sm">
+                    <SelectValue placeholder="Filter by genre" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Genres</SelectItem>
+                    {genres.map((genre) => (
+                      <SelectItem key={genre} value={genre}>
+                        {genre.replace(/_/g, ' ')}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.02 }}>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-[180px] bg-background/50 backdrop-blur-sm">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="title">Title (A-Z)</SelectItem>
+                    <SelectItem value="author">Author (A-Z)</SelectItem>
+                    <SelectItem value="price-low">Price (Low to High)</SelectItem>
+                    <SelectItem value="price-high">Price (High to Low)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Books Grid */}
+        {isLoading && fetchBooks.length === 0 ? (
+          <Loader />
+        ) : error ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-center justify-center min-h-[400px]"
+          >
+            <div className="text-center space-y-4">
+              <p className="text-red-500 mb-4">{error}</p>
+              <Button onClick={() => fetchBooksData(currentPage - 1, 12)}>Try Again</Button>
+            </div>
+          </motion.div>
+        ) : fetchBooks.length === 0 ? (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-center justify-center min-h-[400px]"
+          >
+            <p className="text-muted-foreground">No books available at the moment.</p>
+          </motion.div>
+        ) : (
+          <>
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            >
+              {sortedBooks.map((book) => (
+                <motion.div 
+                  key={book.id} 
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <BookCard book={book} />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Pagination */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="mt-8 flex justify-center"
+            >
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <motion.div
+                    key={pageNum}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      size="icon"
+                      onClick={() => handlePageChange(pageNum)}
+                      className={currentPage === pageNum ? "bg-primary text-primary-foreground" : ""}
+                      disabled={isLoading}
+                    >
+                      {pageNum}
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
     </div>
   )
