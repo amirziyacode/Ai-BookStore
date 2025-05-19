@@ -38,20 +38,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [])
 
-  const login = (email: string,token:string) => {
+  const login = (email: string, token: string) => {
+    if (email === "admin@gmai.com") {
+      const userData: User = {
+        id: "admin-" + Date.now(),
+        role: "ADMIN",
+        email,
+      }
+      setUser(userData)
+      setIsAuthenticated(true)
+      localStorage.setItem("user", JSON.stringify(userData))
+      localStorage.setItem("token", token)
+      return
+    }
+    
     const userData: User = {
       id: "user-" + Date.now(),
+      role: "USER",
       email,
     }
     setUser(userData)
     setIsAuthenticated(true)
     localStorage.setItem("user", JSON.stringify(userData))
-    localStorage.setItem("token",token)
+    localStorage.setItem("token", token)
   }
 
   const signup = (email: string, name: string,token:string) => {
     const userData: User = {
       id: "user-" + Date.now(),
+      role:'USER',
       email,
       name,
     }

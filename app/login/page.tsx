@@ -46,44 +46,61 @@ export default function AuthPage() {
     setSignupData((prev) => ({ ...prev, [name]: value }))
   }
 
-  async function handleLoginSubmit (e: React.FormEvent) {
+  async function handleLoginSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     const email = loginData.email;
     const password = loginData.password;
-    // TODO : Jwt Token
     var token = "";
 
     setIsSubmitting(true)
 
-    try{
-      const response = await axios.post("http://localhost:8080/api/auth/login",{  
+    try {
+
+      const response = await axios.post("http://localhost:8080/api/auth/login", {
         email,
         password
+      });
 
-      })
-
-      // TODO : for not found email from server
-      if(response.status === 404){
-        alert("You don't have an account !")
+      // TODO : login as Admin
+      if(response.data.isAdmin === true){
+        token = "admin-token-" + Date.now();
+        login(email, token);
+        toast({
+          title: "Admin Login Successful",
+          description: "Welcome to the Admin Panel!",
+        });
+        router.push("/admin");
+        setIsSubmitting(false);
+        return
       }
 
-      // TODO : get Token from server
-      token = response.data.access_token
-      login(loginData.email,token)
+      if (response.status === 404) {
+        toast({
+          title: "Error",
+          description: "You don't have an account!",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      // massage
+      token = response.data.access_token;
+      login(loginData.email, token);
+
       toast({
         title: "Login Successful",
         description: "Welcome back to Modern Bookstore!",
-      })
-      router.push("/")
+      });
+      router.push("/");
 
-      setIsSubmitting(false)
-
-    }catch(error){
-      alert("You don't have an account ")
-      setIsSubmitting(false)
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Invalid credentials. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 

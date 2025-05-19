@@ -134,6 +134,11 @@ export default function Navbar() {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem className="font-medium">{user?.email}</DropdownMenuItem>
                 <DropdownMenuSeparator />
+                {user?.role ==="ADMIN" && (
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin">Admin Panel</Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem asChild>
                   <Link href="/account">My Account</Link>
                 </DropdownMenuItem>

@@ -8,6 +8,7 @@ import { AuthProvider } from "@/context/auth-context"
 import { CartProvider } from "@/context/cart-context"
 import Footer from "@/components/footer"
 import { AIChatBox } from "@/components/ai-chat-box"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -32,11 +33,12 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <CartProvider>
-              <div className="flex min-h-screen flex-col">
+              <div className="relative flex min-h-screen flex-col">
                 <Navbar />
                 <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
                 <Footer />
                 <AIChatBox />
+                <Toaster />
               </div>
             </CartProvider>
           </AuthProvider>
