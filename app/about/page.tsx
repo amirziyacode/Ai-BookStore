@@ -132,7 +132,7 @@ export default function AboutPage() {
                 className="flex flex-col items-center rounded-lg bg-white p-6 shadow-md dark:bg-slate-700 md:w-1/3"
               >
                 <h3 className="mb-2 text-xl font-semibold">{item.title}</h3>
-                <p className="text-center text-gray-600 dark:text-gray-300">
+              <p className="text-center text-gray-600 dark:text-gray-300">
                   {item.description}
                 </p>
               </motion.div>
@@ -217,18 +217,18 @@ export default function AboutPage() {
           className="flex flex-wrap justify-center gap-4"
         >
           <motion.div variants={cardVariants}>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-slate-900">
-                Contact Us
-              </Button>
-            </Link>
+          <Link href="/contact">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-slate-900">
+              Contact Us
+            </Button>
+          </Link>
           </motion.div>
           <motion.div variants={cardVariants}>
-            <Link href="/bookstore">
-              <Button size="lg" className="bg-rose-600 hover:bg-rose-700">
-                Browse Books
-              </Button>
-            </Link>
+          <Link href="/bookstore">
+            <Button size="lg" className="bg-rose-600 hover:bg-rose-700">
+              Browse Books
+            </Button>
+          </Link>
           </motion.div>
         </motion.div>
       </motion.div>

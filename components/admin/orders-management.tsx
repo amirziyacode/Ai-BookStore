@@ -48,7 +48,7 @@ export default function OrdersManagement() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/order/getAllOrders", {
+      const response = await axios.get("http://localhost:8080/api/admin/getAllOrders", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,7 +102,7 @@ export default function OrdersManagement() {
       case "shipped":
         return <Badge variant="default">Shipped</Badge>
       case "delivered":
-        return <Badge variant="success">Delivered</Badge>
+        return <Badge variant="default">Delivered</Badge>
       case "cancelled":
         return <Badge variant="destructive">Cancelled</Badge>
       default:

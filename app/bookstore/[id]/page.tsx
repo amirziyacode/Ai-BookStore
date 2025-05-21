@@ -190,12 +190,12 @@ export default function BookDetailPage() {
                 animate={{ scale: 1 }}
                 transition={{ delay: 1 }}
               >
-                <Badge
-                  variant="outline"
-                  className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
-                >
-                  {fetchbook.discount}% OFF
-                </Badge>
+              <Badge
+                variant="outline"
+                className="ml-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+              >
+                {fetchbook.discount}% OFF
+              </Badge>
               </motion.div>
             )}
           </motion.div>
@@ -208,14 +208,14 @@ export default function BookDetailPage() {
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
               <Button onClick={handleAddToCart} className="w-full">
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                Add to Cart
-              </Button>
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Add to Cart
+            </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="outline" onClick={handleToggleWishlist}>
-                <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current text-red-500" : ""}`} />
-              </Button>
+            <Button variant="outline" onClick={handleToggleWishlist}>
+              <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current text-red-500" : ""}`} />
+            </Button>
             </motion.div>
           </motion.div>
 

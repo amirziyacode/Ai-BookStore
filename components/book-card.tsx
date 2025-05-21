@@ -39,10 +39,10 @@ export default function BookCard({ book }: BookCardProps) {
             transition={{ duration: 0.3 }}
             className="relative h-full w-full"
           >
-            <Image
-              src={book.coverImage || "/placeholder.svg?height=450&width=300"}
-              alt={book.title}
-              fill
+          <Image
+            src={book.coverImage || "/placeholder.svg?height=450&width=300"}
+            alt={book.title}
+            fill
               className="object-cover"
             />
           </motion.div>
@@ -58,7 +58,7 @@ export default function BookCard({ book }: BookCardProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Badge className="absolute right-2 top-2 bg-green-500 text-white hover:bg-green-600">New</Badge>
+            <Badge className="absolute right-2 top-2 bg-green-500 text-white hover:bg-green-600">New</Badge>
             </motion.div>
           )}
           {book.bestseller && (
@@ -67,7 +67,7 @@ export default function BookCard({ book }: BookCardProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <Badge className="absolute left-2 top-2 bg-amber-500 text-white hover:bg-amber-600">Bestseller</Badge>
+            <Badge className="absolute left-2 top-2 bg-amber-500 text-white hover:bg-amber-600">Bestseller</Badge>
             </motion.div>
           )}
           {book.discount > 0 && (
@@ -138,9 +138,9 @@ export default function BookCard({ book }: BookCardProps) {
               className="w-full" 
               onClick={handleAddToCart}
             >
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Add to Cart
-            </Button>
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Add to Cart
+          </Button>
           </motion.div>
         </CardFooter>
       </Link>
