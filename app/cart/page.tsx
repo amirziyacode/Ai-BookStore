@@ -100,8 +100,6 @@ export default function CartPage() {
         }
       });
 
-      alert(response.data.Massage_Order)
-
       toast({
         title: "Order placed successfully",
         description: "Thank you for your purchase!",

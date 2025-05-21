@@ -60,7 +60,7 @@ export default function BooksManagement() {
   const fetchBooks = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/admin/getAllBooks",
+      const response = await axios.get("http://localhost:8080/api/admin/book/getAllBooks",
         {headers: { Authorization: `Bearer ${token}` }}
       )
 
