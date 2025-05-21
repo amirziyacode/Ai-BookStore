@@ -44,7 +44,7 @@ export default function UsersManagement() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/user/getAllUsers", {
+      const response = await axios.get("http://localhost:8080/api/admin/getAllUsers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -166,7 +166,7 @@ export default function UsersManagement() {
                   <TableCell>{getRoleBadge(user.role)}</TableCell>
                   <TableCell>
                     <Badge
-                      variant={user.isActive ? "success" : "destructive"}
+                      variant={user.isActive ? "default" : "destructive"}
                     >
                       {user.isActive ? "Active" : "Inactive"}
                     </Badge>

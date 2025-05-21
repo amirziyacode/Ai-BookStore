@@ -64,8 +64,11 @@ export default function AuthPage() {
 
       // TODO : login as Admin
       if(response.data.isAdmin === true){
-        token = "admin-token-" + Date.now();
+        token = response.data.access_token;
+
+        // TODO : send date to authcontext
         login(email, token);
+
         toast({
           title: "Admin Login Successful",
           description: "Welcome to the Admin Panel!",

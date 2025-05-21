@@ -30,6 +30,7 @@ import { Book } from "@/lib/types"
 import { Plus, Pencil, Trash2 } from "lucide-react"
 import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
+import { headers } from "next/headers"
 
 export default function BooksManagement() {
   const [books, setBooks] = useState<Book[]>([])
@@ -58,7 +59,11 @@ export default function BooksManagement() {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/book/allBooks")
+      const token = localStorage.getItem("token")
+      const response = await axios.get("http://localhost:8080/api/admin/getAllBooks",
+        {headers: { Authorization: `Bearer ${token}` }}
+      )
+
       setBooks(response.data)
     } catch (error) {
       console.error("Error fetching books:", error)

@@ -27,7 +27,9 @@ export default function AdminPage() {
   })
 
   useEffect(() => {
-    if (!isAuthenticated || user?.role !== "ADMIN") {
+    const token = localStorage.getItem("token")
+    console.log(token)
+    if (!isAuthenticated || user?.role !== "ADMIN" ) {
       router.push("/login")
     }
   }, [isAuthenticated, user, router])
@@ -40,13 +42,13 @@ export default function AdminPage() {
     try {
       const token = localStorage.getItem("token")
       const [booksRes, ordersRes, usersRes] = await Promise.all([
-        axios.get("http://localhost:8080/api/book/allBooks", {
+        axios.get("http://localhost:8080/api/admin/getAllBooks", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:8080/api/order/getAllOrders", {
+        axios.get("http://localhost:8080/api/admin/getAllOrders", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:8080/api/user/getAllUsers", {
+        axios.get("http://localhost:8080/api/admin/getAllUsers", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ])
