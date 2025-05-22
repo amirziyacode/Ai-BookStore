@@ -124,19 +124,20 @@ export default function AuthPage() {
             description: "Please make sure your passwords match.",
            variant: "destructive",
          })
-           alert("Please make sure your passwords match.")
             return
         }
       setIsSubmitting(true)
       
     try {
-      token = (await axios.post("http://localhost:8080/api/auth/register",{  
+      const response = (await axios.post("http://localhost:8080/api/auth/register",{  
         fullName,
         email,
         password
-      })).data.access_token
+      }))
+
+      
       // TODO register from Api
-      signup(signupData.email,signupData.name,token)
+      signup(signupData.email,signupData.name,response.data.access_token)
       router.push("/")
       setIsSubmitting(false)
       toast({
@@ -144,6 +145,12 @@ export default function AuthPage() {
         description: "Welcome to Modern Bookstore!",
       })
     } catch (error) {
+        toast({
+            title: "Error",
+            description: "Email is already excited. Please use an another email address.",
+            variant: "destructive",
+        });
+        setIsSubmitting(false)
       console.error('Failed:', error);
     }
   }

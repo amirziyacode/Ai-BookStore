@@ -14,9 +14,11 @@ import OrdersManagement from "@/components/admin/orders-management"
 import UsersManagement from "@/components/admin/users-management"
 import { Toaster } from "@/components/ui/toaster"
 import axios from "axios"
+import { useToast } from "@/hooks/use-toast"
 
 export default function AdminPage() {
   const router = useRouter()
+    const { toast } = useToast()
   const { user, isAuthenticated } = useAuth()
   const [activeTab, setActiveTab] = useState("dashboard")
   const [stats, setStats] = useState({
@@ -29,7 +31,7 @@ export default function AdminPage() {
   useEffect(() => {
     const token = localStorage.getItem("token")
     console.log(token)
-    if (!isAuthenticated || user?.role !== "ADMIN" ) {
+    if (!isAuthenticated) {
       router.push("/login")
     }
   }, [isAuthenticated, user, router])
@@ -52,7 +54,6 @@ export default function AdminPage() {
           headers: { Authorization: `Bearer ${token}` }
         })
       ])
-
       setStats({
         totalBooks: booksRes.data.length || 0,
         totalOrders: ordersRes.data.length || 0,
@@ -61,6 +62,7 @@ export default function AdminPage() {
       })
     } catch (error) {
       console.error("Error fetching stats:", error)
+      router.push("/login")
     }
   }
 

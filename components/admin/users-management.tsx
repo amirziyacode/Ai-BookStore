@@ -66,7 +66,7 @@ export default function UsersManagement() {
     try {
       const token = localStorage.getItem("token")
       await axios.put(
-        `http://localhost:8080/api/user/updateRole/${userId}`,
+        `http://localhost:8080/api/admin/user/updateRole/${userId}`,
         { role: newRole },
         {
           headers: {
@@ -93,9 +93,12 @@ export default function UsersManagement() {
     try {
       const token = localStorage.getItem("token")
       await axios.put(
-        `http://localhost:8080/api/user/updateStatus/${userId}`,
-        { isActive },
+        `http://localhost:8080/api/admin/user/updateStatus/${userId}`,
+        null,
         {
+          params:{
+            status:isActive
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },

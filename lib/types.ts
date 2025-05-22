@@ -53,14 +53,6 @@ export interface Order {
   subtotal: number
   tax: number
   total: number
-  // shipping_address: {
-  //   name: string
-  //   street: string
-  //   city: string
-  //   state: string
-  //   zip: string
-  //   country: string
-  // }
 }
 
 export interface Notification {
