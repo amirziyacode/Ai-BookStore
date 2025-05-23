@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Book } from "@/lib/types"
-import { Plus, Pencil, Trash2, AlertTriangle } from "lucide-react"
+import { Plus, Pencil, Trash2, AlertTriangle, Search } from "lucide-react"
 import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
 import { headers } from "next/headers"
@@ -46,6 +46,8 @@ import {
 
 export default function BooksManagement() {
   const [books, setBooks] = useState<Book[]>([])
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingBook, setEditingBook] = useState<Book | null>(null)
@@ -74,6 +76,21 @@ export default function BooksManagement() {
     fetchBooks()
   }, [])
 
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredBooks(books)
+    } else {
+      const query = searchQuery.toLowerCase()
+      const filtered = books.filter(
+        (book) =>
+          book.title.toLowerCase().includes(query) ||
+          book.author.toLowerCase().includes(query) ||
+          book.category.toLowerCase().includes(query)
+      )
+      setFilteredBooks(filtered)
+    }
+  }, [searchQuery, books])
+
   const fetchBooks = async () => {
     try {
       const token = localStorage.getItem("token")
@@ -82,6 +99,7 @@ export default function BooksManagement() {
       )
 
       setBooks(response.data)
+      setFilteredBooks(response.data)
     } catch (error: any) {
       console.error("Error fetching books:", error)
       if (error.response?.status === 401 || error.response?.status === 403) {
@@ -528,6 +546,18 @@ export default function BooksManagement() {
         </div>
       </div>
 
+      <div className="flex items-center space-x-2">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search books by title, author, or category..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-8"
+          />
+        </div>
+      </div>
+
       <div className="rounded-md border">
         <div className="relative">
           <div className="max-h-[600px] overflow-auto">
@@ -550,14 +580,14 @@ export default function BooksManagement() {
                       Loading...
                     </TableCell>
                   </TableRow>
-                ) : books.length === 0 ? (
+                ) : filteredBooks.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center">
-                      No books found
+                      {searchQuery ? "No books found matching your search" : "No books found"}
                     </TableCell>
                   </TableRow>
                 ) : (
-                  books.map((book, index) => (
+                  filteredBooks.map((book, index) => (
                     <TableRow key={book.id} className="hover:bg-muted/50">
                       <TableCell className="text-muted-foreground">{index + 1}</TableCell>
                       <TableCell className="font-medium">{book.title}</TableCell>
