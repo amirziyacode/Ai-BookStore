@@ -5,7 +5,7 @@ export interface Book {
   description: string
   discount?: number
   price: number
-  coverImage?: string
+  coverImage: string
   rating: number
   category: string
   new?: boolean
@@ -15,6 +15,8 @@ export interface Book {
   paperback: number
   language: string
   isbn: string
+  isNew:boolean
+  isBestSeller:boolean
 }
 
 export interface CartItem {

@@ -7,11 +7,12 @@ import { Sidebar, SidebarProvider } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, Package, Users, Settings, BarChart3 } from "lucide-react"
+import { BookOpen, Package, Users, BarChart3, Settings as SettingsIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import BooksManagement from "@/components/admin/books-management"
 import OrdersManagement from "@/components/admin/orders-management"
 import UsersManagement from "@/components/admin/users-management"
+import Settings from "@/components/admin/settings"
 import { Toaster } from "@/components/ui/toaster"
 import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
@@ -60,9 +61,17 @@ export default function AdminPage() {
         totalUsers: usersRes.data.length || 0,
         activeUsers: usersRes.data.filter((user: any) => user.isActive).length || 0
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching stats:", error)
-      router.push("/login")
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        toast({
+          variant: "destructive",
+          title: "Session Expired",
+          description: "Please login again to continue.",
+        })
+        localStorage.removeItem("token")
+        router.push("/login")
+      }
     }
   }
 
@@ -136,7 +145,7 @@ export default function AdminPage() {
               className="w-full justify-start"
               onClick={() => setActiveTab("settings")}
             >
-              <Settings className="mr-2 h-4 w-4" />
+              <SettingsIcon className="mr-2 h-4 w-4" />
               Settings
             </Button>
           </nav>
@@ -214,14 +223,7 @@ export default function AdminPage() {
               </TabsContent>
 
               <TabsContent value="settings" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Settings</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Settings content will go here</p>
-                  </CardContent>
-                </Card>
+                <Settings />
               </TabsContent>
             </Tabs>
           </motion.div>
