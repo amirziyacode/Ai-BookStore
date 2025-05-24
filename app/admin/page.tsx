@@ -7,7 +7,7 @@ import { Sidebar, SidebarProvider } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, Package, Users, BarChart3, Settings as SettingsIcon } from "lucide-react"
+import { BookOpen, Package, Users, BarChart3, Settings as SettingsIcon, Bell, MessageSquare } from "lucide-react"
 import { motion } from "framer-motion"
 import BooksManagement from "@/components/admin/books-management"
 import OrdersManagement from "@/components/admin/orders-management"
@@ -16,6 +16,8 @@ import Settings from "@/components/admin/settings"
 import { Toaster } from "@/components/ui/toaster"
 import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
+import NotificationsManagement from "@/components/admin/notifications-management"
+import MessagesManagement from "@/components/admin/messages-management"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -141,6 +143,22 @@ export default function AdminPage() {
               Users
             </Button>
             <Button
+              variant={activeTab === "notifications" ? "secondary" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("notifications")}
+            >
+              <Bell className="mr-2 h-4 w-4" />
+              Notifications
+            </Button>
+            <Button
+              variant={activeTab === "messages" ? "secondary" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("messages")}
+            >
+              <MessageSquare className="mr-2 h-4 w-4" />
+              Messages
+            </Button>
+            <Button
               variant={activeTab === "settings" ? "secondary" : "ghost"}
               className="w-full justify-start"
               onClick={() => setActiveTab("settings")}
@@ -220,6 +238,14 @@ export default function AdminPage() {
 
               <TabsContent value="users" className="space-y-4">
                 <UsersManagement />
+              </TabsContent>
+
+              <TabsContent value="notifications" className="space-y-4">
+                <NotificationsManagement />
+              </TabsContent>
+
+              <TabsContent value="messages" className="space-y-4">
+                <MessagesManagement />
               </TabsContent>
 
               <TabsContent value="settings" className="space-y-4">

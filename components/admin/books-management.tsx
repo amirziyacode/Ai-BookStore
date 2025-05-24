@@ -72,6 +72,8 @@ export default function BooksManagement() {
     isBestSeller: false,
   })
 
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
   useEffect(() => {
     fetchBooks()
   }, [])
@@ -138,8 +140,116 @@ export default function BooksManagement() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+
+    // Title validation
+    if (!formData.title.trim()) {
+      newErrors.title = "Title is required"
+    } else if (formData.title.length < 2) {
+      newErrors.title = "Title must be at least 2 characters long"
+    }
+
+    // Author validation
+    if (!formData.author.trim()) {
+      newErrors.author = "Author is required"
+    }
+
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required"
+    } else if (formData.description.length < 10) {
+      newErrors.description = "Description must be at least 10 characters long"
+    }
+
+    // Price validation
+    if (!formData.price) {
+      newErrors.price = "Price is required"
+    } else {
+      const price = parseFloat(formData.price)
+      if (isNaN(price) || price <= 0) {
+        newErrors.price = "Price must be greater than 0"
+      }
+    }
+
+    // Category validation
+    if (!formData.category) {
+      newErrors.category = "Category is required"
+    }
+
+    // Publisher validation
+    if (!formData.publisher.trim()) {
+      newErrors.publisher = "Publisher is required"
+    }
+
+    // Year validation
+    if (!formData.year) {
+      newErrors.year = "Year is required"
+    } else {
+      const year = parseInt(formData.year)
+      const currentYear = new Date().getFullYear()
+      if (isNaN(year) || year < 1900 || year > currentYear) {
+        newErrors.year = `Year must be between 1900 and ${currentYear}`
+      }
+    }
+
+    // Paperback validation
+    if (!formData.paperback) {
+      newErrors.paperback = "Paperback count is required"
+    } else {
+      const paperback = parseInt(formData.paperback)
+      if (isNaN(paperback) || paperback < 0) {
+        newErrors.paperback = "Paperback count must be 0 or greater"
+      }
+    }
+
+    // Language validation
+    if (!formData.language.trim()) {
+      newErrors.language = "Language is required"
+    }
+
+    // ISBN validation
+    if (!formData.isbn.trim()) {
+      newErrors.isbn = "ISBN is required"
+    } else if (!/^(?:\d[- ]?){9}[\dXx]$/.test(formData.isbn.replace(/[- ]/g, ''))) {
+      newErrors.isbn = "Invalid ISBN format (10 digits or 9 digits + X)"
+    }
+
+    // Cover Image validation
+    if (!formData.coverImage.trim()) {
+      newErrors.coverImage = "Cover image URL is required"
+    } else if (!/^https?:\/\/.+/.test(formData.coverImage)) {
+      newErrors.coverImage = "Invalid image URL format"
+    }
+
+    // Rating validation
+    const rating = parseFloat(formData.rating)
+    if (isNaN(rating) || rating < 0 || rating > 5) {
+      newErrors.rating = "Rating must be between 0 and 5"
+    }
+
+    // Discount validation
+    const discount = parseFloat(formData.discount)
+    if (isNaN(discount) || discount < 0 || discount > 100) {
+      newErrors.discount = "Discount must be between 0 and 100"
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form",
+        variant: "destructive",
+      })
+      return
+    }
+
     try {
       const token = localStorage.getItem("token")
       const submitData = {
@@ -306,6 +416,7 @@ export default function BooksManagement() {
       isNew: false,
       isBestSeller: false,
     })
+    setErrors({})
     setEditingBook(null)
   }
 
@@ -360,8 +471,9 @@ export default function BooksManagement() {
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
-                      required
+                      className={errors.title ? "border-red-500" : ""}
                     />
+                    {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="author">Author</label>
@@ -370,8 +482,9 @@ export default function BooksManagement() {
                       name="author"
                       value={formData.author}
                       onChange={handleInputChange}
-                      required
+                      className={errors.author ? "border-red-500" : ""}
                     />
+                    {errors.author && <p className="text-sm text-red-500">{errors.author}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="price">Price</label>
@@ -381,8 +494,9 @@ export default function BooksManagement() {
                       type="number"
                       value={formData.price}
                       onChange={handleInputChange}
-                      required
+                      className={errors.price ? "border-red-500" : ""}
                     />
+                    {errors.price && <p className="text-sm text-red-500">{errors.price}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="category">Category</label>
@@ -390,7 +504,7 @@ export default function BooksManagement() {
                       value={formData.category}
                       onValueChange={(value) => handleSelectChange("category", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className={errors.category ? "border-red-500" : ""}>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -401,6 +515,7 @@ export default function BooksManagement() {
                         <SelectItem value="BIOGRAPHY">Biography</SelectItem>
                       </SelectContent>
                     </Select>
+                    {errors.category && <p className="text-sm text-red-500">{errors.category}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="publisher">Publisher</label>
@@ -409,8 +524,9 @@ export default function BooksManagement() {
                       name="publisher"
                       value={formData.publisher}
                       onChange={handleInputChange}
-                      required
+                      className={errors.publisher ? "border-red-500" : ""}
                     />
+                    {errors.publisher && <p className="text-sm text-red-500">{errors.publisher}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="year">Year</label>
@@ -419,8 +535,9 @@ export default function BooksManagement() {
                       name="year"
                       value={formData.year}
                       onChange={handleInputChange}
-                      required
+                      className={errors.year ? "border-red-500" : ""}
                     />
+                    {errors.year && <p className="text-sm text-red-500">{errors.year}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="paperback">Paperback</label>
@@ -430,8 +547,9 @@ export default function BooksManagement() {
                       type="number"
                       value={formData.paperback}
                       onChange={handleInputChange}
-                      required
+                      className={errors.paperback ? "border-red-500" : ""}
                     />
+                    {errors.paperback && <p className="text-sm text-red-500">{errors.paperback}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="language">Language</label>
@@ -440,8 +558,9 @@ export default function BooksManagement() {
                       name="language"
                       value={formData.language}
                       onChange={handleInputChange}
-                      required
+                      className={errors.language ? "border-red-500" : ""}
                     />
+                    {errors.language && <p className="text-sm text-red-500">{errors.language}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="isbn">ISBN</label>
@@ -450,8 +569,9 @@ export default function BooksManagement() {
                       name="isbn"
                       value={formData.isbn}
                       onChange={handleInputChange}
-                      required
+                      className={errors.isbn ? "border-red-500" : ""}
                     />
+                    {errors.isbn && <p className="text-sm text-red-500">{errors.isbn}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="rating">Rating (0-5)</label>
@@ -463,14 +583,10 @@ export default function BooksManagement() {
                       max="5"
                       step="0.1"
                       value={formData.rating}
-                      onChange={(e) => {
-                        const value = parseFloat(e.target.value)
-                        if (value >= 0 && value <= 5) {
-                          handleInputChange(e)
-                        }
-                      }}
-                      required
+                      onChange={handleInputChange}
+                      className={errors.rating ? "border-red-500" : ""}
                     />
+                    {errors.rating && <p className="text-sm text-red-500">{errors.rating}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="coverImage">Cover Image URL</label>
@@ -479,8 +595,9 @@ export default function BooksManagement() {
                       name="coverImage"
                       value={formData.coverImage}
                       onChange={handleInputChange}
-                      required
+                      className={errors.coverImage ? "border-red-500" : ""}
                     />
+                    {errors.coverImage && <p className="text-sm text-red-500">{errors.coverImage}</p>}
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="discount">Discount (%)</label>
@@ -492,8 +609,9 @@ export default function BooksManagement() {
                       max="100"
                       value={formData.discount}
                       onChange={handleInputChange}
-                      required
+                      className={errors.discount ? "border-red-500" : ""}
                     />
+                    {errors.discount && <p className="text-sm text-red-500">{errors.discount}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="flex items-center space-x-2">
@@ -525,8 +643,9 @@ export default function BooksManagement() {
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
-                    required
+                    className={errors.description ? "border-red-500" : ""}
                   />
+                  {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
                 </div>
                 <div className="flex justify-end space-x-2">
                   <Button
