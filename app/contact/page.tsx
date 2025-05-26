@@ -1,17 +1,18 @@
 "use client"
 
 import type React from "react"
-import {useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
-import { toast } from 'react-toastify';
-
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 export default function ContactPage() {
-  const token = localStorage.getItem("token");
+  const router = useRouter()
+  const [token, setToken] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,24 +22,34 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  useEffect(() => {
+    // Access localStorage only on the client side
+    const storedToken = localStorage.getItem("token")
+    setToken(storedToken)
+  }, [])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async(e: React.FormEvent) => {
-    
     e.preventDefault()
-    setIsSubmitting(true)
-
-
-    const payload = {
-      fullName:formData.name,
-      email:formData.email,
-      subject:formData.subject,
-      message:formData.message
+    
+    if (!token) {
+      toast.error("Please login to submit the contact form")
+      router.push("/login")
+      return
     }
 
+    setIsSubmitting(true)
+
+    const payload = {
+      fullName: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message
+    }
 
     try {
       const response = await fetch("http://localhost:8080/api/contact/addContact", {
@@ -50,16 +61,12 @@ export default function ContactPage() {
         body: JSON.stringify(payload)
       });
   
-      // Check if the request was successful
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
-      // Parse the JSON response
       const data = await response.json();
-      alert(data.Massage);
-
-      toast.success(`Hello, ${formData.name}! your massage submitted successfully!`);
+      toast.success(`Hello, ${formData.name}! Your message has been submitted successfully!`);
       
       setFormData({
         name: "",
@@ -67,12 +74,9 @@ export default function ContactPage() {
         subject: "",
         message: "",
       });
-
-      setIsSubmitting(true);
     } catch (error) {
-    
-      toast.error("Error :"+error);
-    }finally{
+      toast.error("Error: " + (error instanceof Error ? error.message : "Failed to submit message"));
+    } finally {
       setIsSubmitting(false)
     }
   }
