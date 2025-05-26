@@ -49,7 +49,7 @@ export default function Settings() {
   const fetchSettings = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/admin/settings", {
+      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/admin/settings", {
         headers: { Authorization: `Bearer ${token}` }
       })
       if (response.data) {
@@ -81,7 +81,7 @@ export default function Settings() {
     try {
       const token = localStorage.getItem("token")
       await axios.post(
-        "http://localhost:8080/api/admin/settings",
+        "https://spring-bookstore-3.onrender.com/api/admin/settings",
         settings,
         {
           headers: { Authorization: `Bearer ${token}` }

@@ -46,7 +46,7 @@ export default function BookstorePage() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get("http://localhost:8080/api/book/Books", {
+      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/book/Books", {
         params: {
           pageNumber: pageNumber,
           perPage: perPage

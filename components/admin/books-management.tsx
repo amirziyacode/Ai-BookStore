@@ -96,7 +96,7 @@ export default function BooksManagement() {
   const fetchBooks = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/admin/book/getAllBooks",
+      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/admin/book/getAllBooks",
         {headers: { Authorization: `Bearer ${token}` }}
       )
 
@@ -262,7 +262,7 @@ export default function BooksManagement() {
 
       if (editingBook) {
         await axios.put(
-          `http://localhost:8080/api/admin/book/updateBook/${editingBook.id}`,
+          `https://spring-bookstore-3.onrender.com/api/admin/book/updateBook/${editingBook.id}`,
           submitData,
           {
             headers: {
@@ -275,7 +275,7 @@ export default function BooksManagement() {
           description: "Book updated successfully",
         })
       } else {
-        await axios.post("http://localhost:8080/api/admin/book/addBook", submitData, {
+        await axios.post("https://spring-bookstore-3.onrender.com/api/admin/book/addBook", submitData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -334,7 +334,7 @@ export default function BooksManagement() {
     if (window.confirm("Are you sure you want to delete this book?")) {
       try {
         const token = localStorage.getItem("token")
-        await axios.delete(`http://localhost:8080/api/admin/book/deleteBook/${id}`, {
+        await axios.delete(`https://spring-bookstore-3.onrender.com/api/admin/book/deleteBook/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -368,7 +368,7 @@ export default function BooksManagement() {
   const handleDeleteAll = async () => {
     try {
       const token = localStorage.getItem("token")
-      await axios.delete("http://localhost:8080/api/admin/book/deleteAll", {
+      await axios.delete("https://spring-bookstore-3.onrender.com/api/admin/book/deleteAll", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -92,7 +92,7 @@ export default function CartPage() {
       }
       const response = await axios({
         method: 'post',
-        url: `http://localhost:8080/api/order/addOrder/${user?.email}`,
+        url: `https://spring-bookstore-3.onrender.com/api/order/addOrder/${user?.email}`,
         data: OrderRequest,
         headers: {
           Authorization: `Bearer ${token}`,

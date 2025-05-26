@@ -52,7 +52,7 @@ export default function NotificationsManagement() {
   const fetchNotifications = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/admin/notifications", {
+      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/admin/notifications", {
         headers: { Authorization: `Bearer ${token}` }
       })
       setNotifications(response.data)
@@ -76,7 +76,7 @@ export default function NotificationsManagement() {
     e.preventDefault()
     try {
       const token = localStorage.getItem("token")
-      await axios.post("http://localhost:8080/api/admin/notifications", formData, {
+      await axios.post("https://spring-bookstore-3.onrender.com/api/admin/notifications", formData, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toast({
@@ -100,7 +100,7 @@ export default function NotificationsManagement() {
     if (window.confirm("Are you sure you want to delete this notification?")) {
       try {
         const token = localStorage.getItem("token")
-        await axios.delete(`http://localhost:8080/api/admin/notifications/${id}`, {
+        await axios.delete(`https://spring-bookstore-3.onrender.com/api/admin/notifications/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         toast({

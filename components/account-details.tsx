@@ -52,7 +52,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
       setIsLoading(true)
       clearCart()
       const token = localStorage.getItem("token")
-      await axios.get("http://localhost:8080/api/auth/logout", {
+      await axios.get("https://spring-bookstore-3.onrender.com/api/auth/logout", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
         }
 
         const response = await axios.get(
-          `http://localhost:8080/api/account/getAccount?${new URLSearchParams({
+          `https://spring-bookstore-3.onrender.com/api/account/getAccount?${new URLSearchParams({
             email: formData.email
           })}`,
           {
@@ -252,7 +252,7 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
       }
 
       await axios.put(
-        `http://localhost:8080/api/account/setAccount?${new URLSearchParams({
+        `https://spring-bookstore-3.onrender.com/api/account/setAccount?${new URLSearchParams({
           email: formData.email
         })}`,
         payload,

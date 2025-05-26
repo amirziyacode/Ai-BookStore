@@ -48,7 +48,7 @@ export default function OrdersManagement() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/admin/order/getAllOrders", {
+      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/admin/order/getAllOrders", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -70,7 +70,7 @@ export default function OrdersManagement() {
     try {
       const token = localStorage.getItem("token")
       await axios.put(
-        `http://localhost:8080/api/admin/order/updateStatus/${orderId}`,
+        `https://spring-bookstore-3.onrender.com/api/admin/order/updateStatus/${orderId}`,
         { orderStatus: newStatus },
         {
           headers: {

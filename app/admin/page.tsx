@@ -47,13 +47,13 @@ export default function AdminPage() {
     try {
       const token = localStorage.getItem("token")
       const [booksRes, ordersRes, usersRes] = await Promise.all([
-        axios.get("http://localhost:8080/api/admin/book/getAllBooks", {
+        axios.get("https://spring-bookstore-3.onrender.com/api/admin/book/getAllBooks", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:8080/api/admin/order/getAllOrders", {
+        axios.get("https://spring-bookstore-3.onrender.com/api/admin/order/getAllOrders", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:8080/api/admin/user/getAllUsers", {
+        axios.get("https://spring-bookstore-3.onrender.com/api/admin/user/getAllUsers", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ])

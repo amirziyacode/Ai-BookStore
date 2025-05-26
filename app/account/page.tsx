@@ -27,7 +27,7 @@ export default function AccountPage() {
   const handleLogout = async() => {
     try{
       const token = localStorage.getItem("token")
-      await axios.get("http://localhost:8080/api/auth/logout",{
+      await axios.get("https://spring-bookstore-3.onrender.com/api/auth/logout",{
         headers:{
           Authorization : `Bearer ${token}`
         }
@@ -49,7 +49,7 @@ export default function AccountPage() {
     const getAccount = async() =>{
       try{
         const token = localStorage.getItem("token")
-        const response = await axios.get("http://localhost:8080/api/account/getAccount",{
+        const response = await axios.get("https://spring-bookstore-3.onrender.com/api/account/getAccount",{
           headers: {
             Authorization: `Bearer ${token}`
           },

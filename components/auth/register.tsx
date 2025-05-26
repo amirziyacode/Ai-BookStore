@@ -46,7 +46,7 @@ export default function Register() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/register", values)
+      const response = await axios.post("https://spring-bookstore-3.onrender.com/api/auth/register", values)
       if (response.data) {
         toast({
           title: "Registration successful!",

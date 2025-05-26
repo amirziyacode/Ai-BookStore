@@ -39,7 +39,7 @@ export default function Navbar() {
   const handlerLogout = async() => {
     try{
       const token = localStorage.getItem("token")
-      const response = await axios.get("http://localhost:8080/api/auth/logout",{
+      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/auth/logout",{
         headers:{
           Authorization : `Bearer ${token}`
         }
