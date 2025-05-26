@@ -132,26 +132,69 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
   const validateForm = (): boolean => {
     const errors: Partial<FormData> = {}
     
+    // Name validation
     if (!formData.name.trim()) {
       errors.name = "Name is required"
+    } else if (formData.name.length < 2) {
+      errors.name = "Name must be at least 2 characters"
+    } else if (formData.name.length > 50) {
+      errors.name = "Name must be less than 50 characters"
     }
+
+    // Phone validation
     if (!formData.phone.trim()) {
       errors.phone = "Phone number is required"
+    } else {
+      const phoneRegex = /^\+?[\d\s-]{10,15}$/
+      if (!phoneRegex.test(formData.phone)) {
+        errors.phone = "Please enter a valid phone number"
+      }
     }
+
+    // Address validation
     if (!formData.address.trim()) {
       errors.address = "Address is required"
+    } else if (formData.address.length < 5) {
+      errors.address = "Address must be at least 5 characters"
+    } else if (formData.address.length > 100) {
+      errors.address = "Address must be less than 100 characters"
     }
+
+    // City validation
     if (!formData.city.trim()) {
       errors.city = "City is required"
+    } else if (formData.city.length < 2) {
+      errors.city = "City must be at least 2 characters"
+    } else if (formData.city.length > 50) {
+      errors.city = "City must be less than 50 characters"
     }
+
+    // State validation
     if (!formData.state.trim()) {
       errors.state = "State is required"
+    } else if (formData.state.length < 2) {
+      errors.state = "State must be at least 2 characters"
+    } else if (formData.state.length > 50) {
+      errors.state = "State must be less than 50 characters"
     }
+
+    // ZIP code validation
     if (!formData.zipCode.trim()) {
       errors.zipCode = "ZIP code is required"
+    } else {
+      const zipRegex = /^\d{5}(-\d{4})?$/
+      if (!zipRegex.test(formData.zipCode)) {
+        errors.zipCode = "Please enter a valid ZIP code (e.g., 12345 or 12345-6789)"
+      }
     }
+
+    // Country validation
     if (!formData.country.trim()) {
       errors.country = "Country is required"
+    } else if (formData.country.length < 2) {
+      errors.country = "Country must be at least 2 characters"
+    } else if (formData.country.length > 50) {
+      errors.country = "Country must be less than 50 characters"
     }
 
     setFormErrors(errors)
@@ -160,10 +203,26 @@ export default function AccountDetails({ user }: AccountDetailsProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value || "" }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    
     // Clear error when user starts typing
     if (formErrors[name as keyof FormData]) {
       setFormErrors((prev) => ({ ...prev, [name]: undefined }))
+    }
+
+    // Real-time validation for specific fields
+    if (name === 'phone') {
+      const phoneRegex = /^\+?[\d\s-]{10,15}$/
+      if (value && !phoneRegex.test(value)) {
+        setFormErrors((prev) => ({ ...prev, phone: "Please enter a valid phone number" }))
+      }
+    }
+
+    if (name === 'zipCode') {
+      const zipRegex = /^\d{5}(-\d{4})?$/
+      if (value && !zipRegex.test(value)) {
+        setFormErrors((prev) => ({ ...prev, zipCode: "Please enter a valid ZIP code (e.g., 12345 or 12345-6789)" }))
+      }
     }
   }
 
