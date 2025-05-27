@@ -59,7 +59,7 @@ export function AIChatBox() {
       setMessages(prev => [...prev, userMessage, assistantMessageRef.current]);
       setInputMessage('');
 
-      const eventSource = new EventSource(`https://spring-bookstore-3.onrender.com/api/ai/ask-bot?message=${encodeURIComponent(inputMessage)}`);
+      const eventSource = new EventSource(`http://localhost:8080/api/ai/ask-bot?message=${encodeURIComponent(inputMessage)}`);
 
       eventSource.onmessage = (event) => {
         try {

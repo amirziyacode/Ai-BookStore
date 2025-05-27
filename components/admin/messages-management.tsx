@@ -47,7 +47,7 @@ export default function MessagesManagement() {
   const fetchMessages = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/admin/messages", {
+      const response = await axios.get("http://localhost:8080/api/admin/messages", {
         headers: { Authorization: `Bearer ${token}` }
       })
       setMessages(response.data)
@@ -75,7 +75,7 @@ export default function MessagesManagement() {
       try {
         const token = localStorage.getItem("token")
         await axios.put(
-          `https://spring-bookstore-3.onrender.com/api/admin/messages/${message.id}/read`,
+          `http://localhost:8080/api/admin/messages/${message.id}/read`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` }
@@ -92,7 +92,7 @@ export default function MessagesManagement() {
     if (window.confirm("Are you sure you want to delete this message?")) {
       try {
         const token = localStorage.getItem("token")
-        await axios.delete(`https://spring-bookstore-3.onrender.com/api/admin/messages/${id}`, {
+        await axios.delete(`http://localhost:8080/api/admin/messages/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         toast({

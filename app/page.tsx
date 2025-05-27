@@ -18,7 +18,7 @@ export default function Home() {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get("https://spring-bookstore-3.onrender.com/api/book/findBestSeller", {
+        const response = await axios.get("http://localhost:8080/api/book/findBestSeller", {
           params: {
             books: "4"
           }

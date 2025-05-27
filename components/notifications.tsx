@@ -18,7 +18,7 @@ export default function Notifications() {
   useEffect(() => {
     const getAllNotifications = async() =>{
       try{
-        const getAllNotifications = await axios.get(`https://spring-bookstore-3.onrender.com/api/notification/getAll/${user?.email}`,{
+        const getAllNotifications = await axios.get(`http://localhost:8080/api/notification/getAll/${user?.email}`,{
           headers:{
             Authorization:`Bearer ${token}`
           }
@@ -34,7 +34,7 @@ export default function Notifications() {
   const markAllAsRead = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // prevents page reload
     try{
-     const response =  await axios.get(`https://spring-bookstore-3.onrender.com/api/notification/marksAllRead/${user?.email.toString()}`,{
+     const response =  await axios.get(`http://localhost:8080/api/notification/marksAllRead/${user?.email.toString()}`,{
       headers:{
           Authorization:`Bearer ${token}`
       }
@@ -48,7 +48,7 @@ export default function Notifications() {
   const deleteNotification = async(e: React.MouseEvent<HTMLButtonElement>,id: number) => {
     e.preventDefault(); // prevents page reload
     try{
-      const response = await axios.delete(`https://spring-bookstore-3.onrender.com/api/notification/deleteById/${id}`,{
+      const response = await axios.delete(`http://localhost:8080/api/notification/deleteById/${id}`,{
         params:{
           email:user?.email
         },

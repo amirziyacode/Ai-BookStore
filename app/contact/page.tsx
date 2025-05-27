@@ -52,7 +52,7 @@ export default function ContactPage() {
     }
 
     try {
-      const response = await fetch("https://spring-bookstore-3.onrender.com/api/contact/addContact", {
+      const response = await fetch("http://localhost:8080/api/contact/addContact", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

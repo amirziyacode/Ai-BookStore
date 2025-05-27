@@ -44,7 +44,7 @@ export default function UsersManagement() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token")
-      const response = await axios.get("https://spring-bookstore-3.onrender.com/api/admin/user/getAllUsers", {
+      const response = await axios.get("http://localhost:8080/api/admin/user/getAllUsers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,7 +66,7 @@ export default function UsersManagement() {
     try {
       const token = localStorage.getItem("token")
       await axios.put(
-        `https://spring-bookstore-3.onrender.com/api/admin/user/updateRole/${userId}`,
+        `http://localhost:8080/api/admin/user/updateRole/${userId}`,
         { role: newRole },
         {
           headers: {
@@ -93,7 +93,7 @@ export default function UsersManagement() {
     try {
       const token = localStorage.getItem("token")
       await axios.put(
-        `https://spring-bookstore-3.onrender.com/api/admin/user/updateStatus/${userId}`,
+        `http://localhost:8080/api/admin/user/updateStatus/${userId}`,
         null,
         {
           params:{

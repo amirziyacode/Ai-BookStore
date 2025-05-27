@@ -37,7 +37,7 @@ export default function BookDetailPage() {
   useEffect(() => {
     const getBookById = async() =>{
       try{
-        const bookByid = (await axios.get("https://spring-bookstore-3.onrender.com/api/book/getById",{
+        const bookByid = (await axios.get("http://localhost:8080/api/book/getById",{
           params : {
             id : params.id
           }
