@@ -101,6 +101,44 @@ export default function BookstorePage() {
     return 0
   })
 
+  const getBooksByQuerySearch = async(query: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get("http://localhost:8080/api/book/getAllBooksByQuery", {
+        params: {
+          query: query
+        }
+      });
+      
+      if (response.data) {
+        const transformedBooks = response.data.map(transformBookData);
+        setBooks(transformedBooks);
+        setTotalPages(Math.ceil(transformedBooks.length / 12));
+      } else {
+        setError('Invalid response from server');
+      }
+    } catch(error) {
+      console.error('Error searching books:', error);
+      setError('Failed to search books. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Add debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery.trim()) {
+        getBooksByQuerySearch(searchQuery);
+      } else {
+        fetchBooksData(currentPage - 1, 12);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   const Loader = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-muted">
