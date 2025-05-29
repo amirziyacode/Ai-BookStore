@@ -91,4 +91,17 @@ Visit the deployed version of the app to explore features like book browsing, AI
 
 ## 📦 Setup Instructions
 
-> Will be added soon...
+### Frontend (Next.js)
+
+1. Navigate to the frontend directory:
+   ```bash
+   git clone https://github.com/amirziyacode/Ai-BookStore
+2. Install Packages:
+```bash
+  npm install --force
+  npm run dev 
+```
+3. Visit the app in your browser at:
+```text
+http://localhost:3000
+```
