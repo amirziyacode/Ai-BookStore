@@ -1,3 +1,8 @@
+![book-01-Converted-01-1024x428](https://github.com/user-attachments/assets/5565902c-5e4b-4b94-b735-348058beb444)
+
+[![GitHub stars](https://img.shields.io/github/stars/iampawan/FlutterExampleApps.svg?style=social&label=Star)](https://github.com/amirziyacode)
+[![GitHub forks](https://img.shields.io/github/forks/iampawan/FlutterExampleApps.svg?style=social&label=Fork)](https://github.com/amirziyacode?tab=repositories)
+
 # 📚 Online Bookstore App
 
 A full-stack **online bookstore** web application built with **Spring Boot** (backend) and **Next.js** (frontend). The platform allows users to browse and purchase books, chat with an AI assistant, and provides an admin panel for managing orders and content.
