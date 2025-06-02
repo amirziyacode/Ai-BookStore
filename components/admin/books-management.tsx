@@ -211,8 +211,6 @@ export default function BooksManagement() {
     // ISBN validation
     if (!formData.isbn.trim()) {
       newErrors.isbn = "ISBN is required"
-    } else if (!/^(?:\d[- ]?){9}[\dXx]$/.test(formData.isbn.replace(/[- ]/g, ''))) {
-      newErrors.isbn = "Invalid ISBN format (10 digits or 9 digits + X)"
     }
 
     // Cover Image validation
