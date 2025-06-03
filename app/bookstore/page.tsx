@@ -84,8 +84,7 @@ export default function BookstorePage() {
     const matchesSearch =
       book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       book.author.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesGenre = genreFilter === "all" || book.category === genreFilter
-    return matchesSearch && matchesGenre
+    return matchesSearch
   })
 
   const sortedBooks = [...filteredBooks].sort((a, b) => {
@@ -126,18 +125,52 @@ export default function BookstorePage() {
     }
   }
 
+  const getBooksByCategory = async(category: string) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      if (category === "all") {
+        await fetchBooksData(currentPage - 1, 12);
+        return;
+      }
+
+      const response = await axios.get("http://localhost:8080/api/book/getByCategory", {
+        params: {
+          category: category
+        }
+      });
+      
+      if (response.data) {
+        const transformedBooks = response.data.map(transformBookData);
+        setBooks(transformedBooks);
+        setTotalPages(Math.ceil(transformedBooks.length / 12));
+        setCurrentPage(1); // Reset to first page when changing category
+      } else {
+        setError('Invalid response from server');
+      }
+    } catch(error) {
+      console.error('Error fetching books by category:', error);
+      setError('Failed to fetch books by category. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   // Add debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchQuery.trim()) {
         getBooksByQuerySearch(searchQuery);
+      } else if (genreFilter !== "all") {
+        getBooksByCategory(genreFilter);
       } else {
         fetchBooksData(currentPage - 1, 12);
       }
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [searchQuery]);
+  }, [searchQuery, genreFilter, currentPage]);
 
   const Loader = () => {
     return (
