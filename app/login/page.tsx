@@ -87,6 +87,17 @@ export default function AuthPage() {
         return;
       }
 
+      // Check if email is verified
+      if (response.data.verified === false) {
+        toast({
+          title: "Email Not Verified",
+          description: "Please verify your email before logging in.",
+          variant: "destructive",
+        });
+        router.push(`/verify?email=${encodeURIComponent(loginData.email)}`);
+        return;
+      }
+
       token = response.data.access_token;
       login(loginData.email, token);
 
@@ -137,13 +148,13 @@ export default function AuthPage() {
 
       
       // TODO register from Api
-      signup(signupData.email,signupData.name,response.data.access_token)
-      router.push("/")
+      // Don't automatically sign in - redirect to verification
       setIsSubmitting(false)
       toast({
         title: "Account Created",
-        description: "Welcome to Modern Bookstore!",
+        description: "Please check your email and verify your account.",
       })
+      router.push(`/verify?email=${encodeURIComponent(signupData.email)}`)
     } catch (error) {
         toast({
             title: "Error",
